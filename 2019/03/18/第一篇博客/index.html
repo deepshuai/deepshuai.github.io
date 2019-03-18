@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 #1、DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处">
+<meta name="description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 1、DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理">
 <meta name="keywords" content="AI芯片">
 <meta property="og:type" content="article">
 <meta property="og:title" content="中科院计算所寒武纪团队DianNao系列论文导读">
 <meta property="og:url" content="https://deepshuai.github.io/2019/03/18/第一篇博客/index.html">
 <meta property="og:site_name" content="努力，任何时候都不晚。">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 #1、DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 1、DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-18T09:10:40.879Z">
+<meta property="og:updated_time" content="2019-03-18T12:16:51.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="中科院计算所寒武纪团队DianNao系列论文导读">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 #1、DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 1、DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理">
 
 
 
@@ -310,13 +310,13 @@
 
       
         <p>&emsp;&emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。</p>
-<p>#1、DianNao项目之前：<br>&emsp;&emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技术、应用和机器学习发展的大势所趋。在2012年的ISCA上，Temam教授提出了第一个机器学习加速器设计，表明在以神经网络为基础的一大类应用上是可以以很小的面积和功耗获得高性能的。但此工作的主要局限性在于其内存带宽。</p>
-<p>#2、DianNao项目：<br>&emsp;&emsp;DianNao学术项目的目标是面向机器学习研究加速器架构。本项目是中科院计算所的陈云霁教授和法国Inria的Olivier Temam间的一个学术合作项目，双方为此设立了联合实验室。</p>
+<h1 id="1、DianNao项目之前："><a href="#1、DianNao项目之前：" class="headerlink" title="1、DianNao项目之前："></a>1、DianNao项目之前：</h1><p>&emsp;&emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技术、应用和机器学习发展的大势所趋。在2012年的ISCA上，Temam教授提出了第一个机器学习加速器设计，表明在以神经网络为基础的一大类应用上是可以以很小的面积和功耗获得高性能的。但此工作的主要局限性在于其内存带宽。</p>
+<h1 id="2、DianNao项目："><a href="#2、DianNao项目：" class="headerlink" title="2、DianNao项目："></a>2、DianNao项目：</h1><p>&emsp;&emsp;DianNao学术项目的目标是面向机器学习研究加速器架构。本项目是中科院计算所的陈云霁教授和法国Inria的Olivier Temam间的一个学术合作项目，双方为此设立了联合实验室。</p>
 <p>&emsp;&emsp;Temam教授和陈教授的合作始于第二个加速器，名为<font color="ff00"><a href="http://boogie.is.titech.ac.jp/lecture/lecture-wiki/index.php?plugin=attach&amp;refer=hpc2015&amp;openfile=DianNao.pdf" target="_blank" rel="noopener">DianNao</a></font>（这也是DianNao家族的第一个成员）。DianNao在ISCA-2012加速器的基础上增加了局部存储，使其可以捕捉深度神经网路的数据局部性并由此克服内存带宽的限制。DianNao加速器的设计发表于ASPLOS-2014，获得了该会议的最佳论文奖。</p>
 <p>&emsp;&emsp;DianNao家族的第二个加速器是DianNao的多片版本，有两个主要的设计目标：一是揭示神经网络层的可分特性使得加速器可具备极好的可扩展性，二是聚集足够多的片上存储来将整个机器学习模型都放在片上，从而克服内存带宽的限制。这个被称为<font color="ff00"><a href="http://novel.ict.ac.cn/ychen/pdf/DaDianNao.pdf" target="_blank" rel="noopener">DaDianNao</a></font>的设计发表在MICRO-2014上，获得了该会议的最佳论文奖。</p>
 <p>&emsp;&emsp;作为克服嵌入式应用中内存带宽限制的另一种方法，我们揭示可以通过加速器和传感器的直连来绕过内存。我们将此思想应用于视觉传感器，从而提出了DianNao家族的第三个加速器<font color="ff00"><a href="https://dl.acm.org/citation.cfm?doid=2749469.2750389" target="_blank" rel="noopener">ShiDianNao</a></font>，发表于2015年的ISCA上。</p>
 <p>&emsp;&emsp;最后，我们也揭示这类加速器的应用领域可以被拓展至多种机器学习算法，因为这些算法多具有类似的运算操作。相应的加速器设计称为<font color="#ff00"><a href="https://dl.acm.org/citation.cfm?doid=2694344.2694358" target="_blank" rel="noopener">PuDianNao</a></font>（DianNao家族的第四个以及最后一个成员），发表于ASPLOS-2015。</p>
-<p>#3、DianNao项目之后<br>&emsp;&emsp;陈云霁教授和他的中科院计算所团队为一大类神经网络加速器设计了一套名为<font color="ff00"><a href="https://dl.acm.org/citation.cfm?id=3001179" target="_blank" rel="noopener">Cambricon的指令集</a></font>。该指令集发表于ISCA-2016，在该会议的同行评议中获得了最高分。</p>
+<h1 id="3、DianNao项目之后"><a href="#3、DianNao项目之后" class="headerlink" title="3、DianNao项目之后"></a>3、DianNao项目之后</h1><p>&emsp;&emsp;陈云霁教授和他的中科院计算所团队为一大类神经网络加速器设计了一套名为<font color="ff00"><a href="https://dl.acm.org/citation.cfm?id=3001179" target="_blank" rel="noopener">Cambricon的指令集</a></font>。该指令集发表于ISCA-2016，在该会议的同行评议中获得了最高分。</p>
 <p>&emsp;&emsp;同时针对深度学习模型中的稀疏化特点，又提出了一种对稀疏权重的矩阵运算加速的架构<a href="https://ieeexplore.ieee.org/document/7783723" target="_blank" rel="noopener">Cambricon-X</a>。</p>
 
       
@@ -418,8 +418,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -472,6 +481,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、DianNao项目之前："><span class="nav-number">1.</span> <span class="nav-text">1、DianNao项目之前：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、DianNao项目："><span class="nav-number">2.</span> <span class="nav-text">2、DianNao项目：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、DianNao项目之后"><span class="nav-number">3.</span> <span class="nav-text">3、DianNao项目之后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
