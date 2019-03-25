@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="该论文是寒武纪团队的第一篇论文。论文结合了神经网络模型数据的局部性特点以及计算的特点，进行存储体系以及专用硬件的设计，从而获得更好的性能加速比以及计算功耗比。 1、神经网络的硬件化神经网络的结构模拟人类大脑内部的神经元结构，每一个神经元有很多的突触，用于给其他的神经元来传递信息，所有神经元的信息累加，会使该神经元处于兴奋或者抑制状态。成千上万个神经元组合起来就是一个神经网络模型。如下图所示： 下图">
+<meta name="description" content="&amp;emsp;&amp;emsp;该论文是寒武纪团队的第一篇论文。论文结合了神经网络模型数据的局部性特点以及计算的特点，进行存储体系以及专用硬件的设计，从而获得更好的性能加速比以及计算功耗比。 论文的主要贡献： 1、对大规模的CNNs和DNNs最先进机器学习算法的综合硬件设计；2、在很小的芯片空间上实现高吞吐率和低功耗；3、专注于优化访存的性能，着重解决存储墙的问题。   1、神经网络的硬件化&amp;emsp;&amp;">
 <meta name="keywords" content="AI芯片 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文-DianNao: A Small-Footprint High-Throughput Accelerator for Ubiquitous Machine-Learning">
 <meta property="og:url" content="https://deepshuai.github.io/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="该论文是寒武纪团队的第一篇论文。论文结合了神经网络模型数据的局部性特点以及计算的特点，进行存储体系以及专用硬件的设计，从而获得更好的性能加速比以及计算功耗比。 1、神经网络的硬件化神经网络的结构模拟人类大脑内部的神经元结构，每一个神经元有很多的突触，用于给其他的神经元来传递信息，所有神经元的信息累加，会使该神经元处于兴奋或者抑制状态。成千上万个神经元组合起来就是一个神经网络模型。如下图所示： 下图">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;该论文是寒武纪团队的第一篇论文。论文结合了神经网络模型数据的局部性特点以及计算的特点，进行存储体系以及专用硬件的设计，从而获得更好的性能加速比以及计算功耗比。 论文的主要贡献： 1、对大规模的CNNs和DNNs最先进机器学习算法的综合硬件设计；2、在很小的芯片空间上实现高吞吐率和低功耗；3、专注于优化访存的性能，着重解决存储墙的问题。   1、神经网络的硬件化&amp;emsp;&amp;">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/神经网络硬件化.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/DianNao加速模块.png">
-<meta property="og:updated_time" content="2019-03-21T08:59:34.322Z">
+<meta property="og:updated_time" content="2019-03-25T07:56:16.557Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-DianNao: A Small-Footprint High-Throughput Accelerator for Ubiquitous Machine-Learning">
-<meta name="twitter:description" content="该论文是寒武纪团队的第一篇论文。论文结合了神经网络模型数据的局部性特点以及计算的特点，进行存储体系以及专用硬件的设计，从而获得更好的性能加速比以及计算功耗比。 1、神经网络的硬件化神经网络的结构模拟人类大脑内部的神经元结构，每一个神经元有很多的突触，用于给其他的神经元来传递信息，所有神经元的信息累加，会使该神经元处于兴奋或者抑制状态。成千上万个神经元组合起来就是一个神经网络模型。如下图所示： 下图">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;该论文是寒武纪团队的第一篇论文。论文结合了神经网络模型数据的局部性特点以及计算的特点，进行存储体系以及专用硬件的设计，从而获得更好的性能加速比以及计算功耗比。 论文的主要贡献： 1、对大规模的CNNs和DNNs最先进机器学习算法的综合硬件设计；2、在很小的芯片空间上实现高吞吐率和低功耗；3、专注于优化访存的性能，着重解决存储墙的问题。   1、神经网络的硬件化&amp;emsp;&amp;">
 <meta name="twitter:image" content="https://deepshuai.github.io/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/神经网络硬件化.png">
 
 
@@ -334,9 +334,13 @@
       
 
       
-        <p>该论文是寒武纪团队的第一篇论文。论文结合了神经网络模型数据的局部性特点以及计算的特点，进行存储体系以及专用硬件的设计，从而获得更好的性能加速比以及计算功耗比。</p>
-<h2 id="1、神经网络的硬件化"><a href="#1、神经网络的硬件化" class="headerlink" title="1、神经网络的硬件化"></a>1、神经网络的硬件化</h2><p>神经网络的结构模拟人类大脑内部的神经元结构，每一个神经元有很多的突触，用于给其他的神经元来传递信息，所有神经元的信息累加，会使该神经元处于兴奋或者抑制状态。成千上万个神经元组合起来就是一个神经网络模型。如下图所示：<br><img src="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/神经网络硬件化.png" alt="神经网络硬件化"></p>
-<p>下图是DianNao内部的硬件结构，其中包含三个片上存储，分别是存储输入的NBin、存储输出的NBout以及存储神经网络模型参数的SB，三块存储均是基于SRAM实现，以获取低延时和低功耗的收益。片上存储和片外存储的数据交互方式通过DMA来完成，尽可能的节省通讯的时延。<br><img src="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/DianNao加速模块.png" alt="DianNao加速模块"><br>除了</p>
+        <p>&emsp;&emsp;该论文是寒武纪团队的第一篇论文。论文结合了神经网络模型数据的局部性特点以及计算的特点，进行存储体系以及专用硬件的设计，从而获得更好的性能加速比以及计算功耗比。</p>
+<p><strong>论文的主要贡献：</strong></p>
+<font color="red">1、对大规模的CNNs和DNNs最先进机器学习算法的综合硬件设计；<br>2、在很小的芯片空间上实现高吞吐率和低功耗；<br>3、专注于优化访存的性能，着重解决存储墙的问题。</font>
+
+
+<h2 id="1、神经网络的硬件化"><a href="#1、神经网络的硬件化" class="headerlink" title="1、神经网络的硬件化"></a>1、神经网络的硬件化</h2><p>&emsp;&emsp;神经网络的结构模拟人类大脑内部的神经元结构，每一个神经元有很多的突触，用于给其他的神经元来传递信息，所有神经元的信息累加，会使该神经元处于兴奋或者抑制状态。成千上万个神经元组合起来就是一个神经网络模型。如下图所示：<br><img src="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/神经网络硬件化.png" alt="神经网络硬件化"><br>对于到卷积神经网络的计算，神经的突触就是就是具体的卷积运算，而神经元就是对所有突触效果累加效果的处理。</p>
+<p>&emsp;&emsp;下图是DianNao内部的硬件结构，其中包含三个片上存储，分别是存储输入的NBin、存储输出的NBout以及存储神经网络模型参数的SB，三块存储均是基于SRAM实现，以获取低延时和低功耗的收益。片上存储和片外存储的数据交互方式通过DMA来完成，尽可能的节省通讯的时延。<br><img src="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/DianNao加速模块.png" alt="DianNao加速模块"><br>除了</p>
 
       
     </div>
