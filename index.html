@@ -340,7 +340,9 @@
 <p>明显可以看到硬件对模型伸缩性的处理不理想的问题，为了解决这个问题，寒武纪团队提出DianNao的计算架构。</p>
 <p>&emsp;&emsp;下图是DianNao内部的硬件结构，其中包含三个片上存储，分别是存储输入的NBin、存储输出的NBout以及存储神经网络模型参数的SB，三块存储均是基于SRAM实现，以获取低延时和低功耗的收益。片上存储和片外存储的数据交互方式通过DMA来完成，尽可能的节省通讯的时延。浅蓝色阴影部分是硬件逻辑模拟的神经网络结构，整个部分被称为NFU，是一个包含NFU-1、NFU-2、NFU-3三段的pipeline的结构。<br><img src="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/DianNao加速模块.png" width="400" align="center"></p>
 <p>&emsp;&emsp;<strong>NFU-1</strong>包含16个乘法单元，每个乘法单元拥有16个乘法器，因此NFU-1总共包含$16\times16=256$个乘法器，每个周期可以执行256个乘法运算； <strong>NFU-2</strong>包含16个树状的加法单元，每个加法树按照8-4-2-1个加法器的形式对数据执行加法运算；<strong>NFU-3</strong>包含16个非线性激活单元，每个激活单元对输出的数据进行非线性激活处理。对NFU逻辑结构横向观察发现，NFU的所有逻辑单元被分为16份，包含16个乘法器、$8+4+2+1=15$个加法器，一个激活单元。<br>&emsp;&emsp;整个硬件架构的核心就是三个片上存储和一个拥有三级流水的神经功能单元。根据时分复用的思想，对一个对规模的神经网络，神经网络的参数会以此加载到SB里，每层的输入数据加载到NBin中，每层的计算结果加载到NBout中，NFU提供最基础的计算逻辑(乘法、加法、非线性激活)，这种结构不会与具体的神经网络结构以及其参数规模相互绑定，相较与之前full-hardware implementation的硬件加速器设计，在结构和模型尺寸的灵活性上有很大的改进。</p>
-
+<h2 id="2、优化细节"><a href="#2、优化细节" class="headerlink" title="2、优化细节"></a>2、优化细节</h2><h3 id="2-1、16位定点数代替32位浮点数"><a href="#2-1、16位定点数代替32位浮点数" class="headerlink" title="2.1、16位定点数代替32位浮点数"></a>2.1、16位定点数代替32位浮点数</h3><p>&emsp;&emsp;16位定点数代替32位浮点数的前提：神经网路模型的精度不能显著降低。在模型压缩和加速算法研究领域已经出现很多的研究成果，利用8-bit定点数和16-bit定点数来代替原模型32位浮点数据，并且模型的精度基本没有损失，所以，DianNao论文采用低精度的策略也是建立在算法研究的基础之上的，如下图：<br><img src="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/mnist精度.png" width="400" align="center"><br>mnist数据集(一个较小的手写数字分类的数据集)上的神经网络在16-bit定点数和32位浮点数时对应的分类错误率，相差很小，基本可以忽略。</p>
+<p>而下图是两种精度下芯片的面积和功耗比较：<br><img src="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/面积和功耗.png" width="400" align="center"><br>在很少的精度损失的前提下，芯片的面积将为原来的1/6，而功耗也仅仅为1/7不到，这一种很好的权衡策略。</p>
+<h3 id="2-2、NBin-NBout-SB存储模块分离"><a href="#2-2、NBin-NBout-SB存储模块分离" class="headerlink" title="2.2、NBin/NBout/SB存储模块分离"></a>2.2、NBin/NBout/SB存储模块分离</h3>
           
         
       
