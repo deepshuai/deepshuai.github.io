@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="dsjijsi">
+<meta name="description" content="&amp;emsp;&amp;emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。 DaDianNao是一个多片的硬件系统，考虑到C">
 <meta name="keywords" content="AI芯片，深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文-DaDianNao: A Machine-Learning Supercomputer">
 <meta property="og:url" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="dsjijsi">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。 DaDianNao是一个多片的硬件系统，考虑到C">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-25T14:00:57.462Z">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DianNao架构.png">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DaDianNao高层次结构.png">
+<meta property="og:updated_time" content="2019-03-26T07:49:42.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-DaDianNao: A Machine-Learning Supercomputer">
-<meta name="twitter:description" content="dsjijsi">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。 DaDianNao是一个多片的硬件系统，考虑到C">
+<meta name="twitter:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DianNao架构.png">
 
 
 
@@ -331,7 +334,9 @@
       
 
       
-        <p>dsjijsi</p>
+        <p>&emsp;&emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。</p>
+<p>DaDianNao是一个多片的硬件系统，考虑到CNNs/DNNs和通用的工作负载所面临的存储墙的情况并不相同，它们虽然占用的存储空间很大，但是并没有超出多片系统的存储能力，也就是说可以考虑将数据分布在多片系统之上进行分布式的处理，可以充分的利用片上的高带宽和避免片外的低带宽，使大规模的网络模型可以更加高效的运行。</p>
+<h2 id="整体硬件架构"><a href="#整体硬件架构" class="headerlink" title="整体硬件架构"></a>整体硬件架构</h2><p>DaDianNao可以看作是在DianNao基础之上的扩展，下图所示是DianNao的架构，<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DianNao架构.png" width="400" align="center"><br>DaDianNao的主要区别在于针对存储神经网络输入和输出数据的NBin和NBout，存储神经连接参数的SB的组织形式以及核心计算单元NFU的数据交互方式进行了针对大尺寸模型的考量，而其中最为重要的就是访存体系的设计思想和细节：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DaDianNao高层次结构.png" width="600" align="center"></p>
 
       
     </div>
@@ -448,8 +453,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -511,6 +525,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体硬件架构"><span class="nav-number">1.</span> <span class="nav-text">整体硬件架构</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
