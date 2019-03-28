@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="AI芯片，深度学习,">
+  <meta name="keywords" content="AI芯片， 深度学习,">
 
 
 
@@ -79,29 +79,18 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。 DaDianNao是一个多片的硬件系统，考虑到C">
-<meta name="keywords" content="AI芯片，深度学习">
+<meta name="description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技">
+<meta name="keywords" content="AI芯片， 深度学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="论文-DaDianNao: A Machine-Learning Supercomputer">
-<meta property="og:url" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/index.html">
+<meta property="og:title" content="中科院计算所寒武纪团队DianNao系列论文导读">
+<meta property="og:url" content="https://deepshuai.github.io/2019/03/18/中科院计算所寒武纪团队DianNao系列论文导读/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。 DaDianNao是一个多片的硬件系统，考虑到C">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DianNao架构.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DaDianNao高层次结构.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DRAM.jpg">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DADIANNAONFU.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/pipeline.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/容量.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/差异.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/trainingsp.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/eninference.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/entraining.png">
-<meta property="og:updated_time" content="2019-03-26T13:38:46.624Z">
+<meta property="og:updated_time" content="2019-03-28T16:18:23.594Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="论文-DaDianNao: A Machine-Learning Supercomputer">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。 DaDianNao是一个多片的硬件系统，考虑到C">
-<meta name="twitter:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DianNao架构.png">
+<meta name="twitter:title" content="中科院计算所寒武纪团队DianNao系列论文导读">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技">
 
 
 
@@ -131,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/">
+  <link rel="canonical" href="https://deepshuai.github.io/2019/03/18/中科院计算所寒武纪团队DianNao系列论文导读/">
 
 
 
 
 
-  <title>论文-DaDianNao: A Machine-Learning Supercomputer | 努力，任何时候都不会晚。</title>
+  <title>中科院计算所寒武纪团队DianNao系列论文导读 | 努力，任何时候都不会晚。</title>
   
 
 
@@ -253,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/">
+    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/03/18/中科院计算所寒武纪团队DianNao系列论文导读/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Deepshuai">
@@ -270,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">论文-DaDianNao: A Machine-Learning Supercomputer</h1>
+          <h1 class="post-title" itemprop="name headline">中科院计算所寒武纪团队DianNao系列论文导读</h1>
         
 
         <div class="post-meta">
@@ -282,8 +271,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T21:57:23+08:00">
-                2019-03-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T15:57:58+08:00">
+                2019-03-18
               </time>
             
 
@@ -342,18 +331,15 @@
       
 
       
-        <p>&emsp;&emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。</p>
-<p>DaDianNao是一个多片的硬件系统，考虑到CNNs/DNNs和通用的工作负载所面临的存储墙的情况并不相同，它们虽然占用的存储空间很大，但是并没有超出多片系统的存储能力，也就是说可以考虑将数据分布在多片系统之上进行分布式的处理，可以充分的利用片上的高带宽和避免片外的低带宽，使大规模的网络模型可以更加高效的运行。</p>
-<h2 id="整体硬件架构"><a href="#整体硬件架构" class="headerlink" title="整体硬件架构"></a>整体硬件架构</h2><p>DaDianNao可以看作是在DianNao基础之上的扩展，下图所示是DianNao的架构，<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DianNao架构.png" width="400" align="center"></p>
-<h3 id="单个DaDianNao结构的设计"><a href="#单个DaDianNao结构的设计" class="headerlink" title="单个DaDianNao结构的设计"></a>单个DaDianNao结构的设计</h3><p>DaDianNao的主要区别在于针对存储神经网络输入和输出数据的NBin和NBout，存储神经连接参数的SB的组织形式以及核心计算单元NFU的数据交互方式进行了针对大尺寸模型的考量，而其中最为重要的就是访存体系的设计思想和细节，DaDianDao芯片的访存体系的高层次设计图如下：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DaDianNao高层次结构.png" width="600" align="center"><br>左图是芯片的高层次图，每个芯片由16个tile组成，右图是单个tile的结构图。每个tile内部是一个NFU搭配四个存储SB的eDRAM bank组成，而NBin和NBout则是对应与左图eDRAM router所连接的两条灰色的额eDRAM bank。不难发现，在DaDianNao中SB是采用分布式的方式存储的，之所以采用这种方式，可能的理解如下：<br><strong>a、eDRAM虽然相对于DRAM的延迟显著减小，但是其本质仍然是DRAM，存在着漏电的效应，需要周期性的充电刷新，并且刷新的频率相对于DRAM可能会更高，这可能会对访存的性能带来一定的影响，通过拆分SB存储，可以在一定程度上减小周期性的刷新带来的影响。</strong><br><strong>b、将SB拆分，放在每个NFU周围，这样距离计算单元更近，这样在执行具体的计算的时候，访存的时延更小，性能更高。</strong></p>
-<p><font color="red">DaDianNao相对于DianNao有一个比较明显的改变就是NBin/NBout/SB由原来的SDRAM存储改为eDRAM的存储介质，其只要原因如下：</font><br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DRAM.jpg" width="400" align="center"><br>由上表可以看出，使用SRAM在一定程度上可以缩小延迟，但是其需要的面积太大，这尤其是在高性能计算芯片中面积增加程度很高，成本散热以及功耗都是很难处理的问题，选用eDRAM也是在存储密度/访存延迟/功耗之间最为适宜的权衡。</p>
-<p>每个tile内部的NFU内部结构如图所示：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DADIANNAONFU.png" width="400" align="center"><br>图中详细描绘了NFU流水线的每个阶段与NBin/NBout/SB的交互，针对不同的网络层，根据其存储和计算的特性，其流水线的工作模式如下图所示：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/pipeline.png" width="600" align="center"><br>其中的红色部分The eDram表示的就是SB存储，</p>
-<p>&emsp;&emsp;以上是单个DaDianNao芯片的设计，由下表可知，单个DaDianNao芯片中用于NBin/NBout的central eDRAM的存储容量为4MB，每个tile中用于SB的eDRAM的容量是2MB，每个芯片由16个tile组成，所以单个芯片的eDRAM的总容量是$4+2*16=36$MB，仅仅单片的容量是无法对大模型的网络进行高性能的计算的，所以论文又提出了多片互连的架构。<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/容量.png" width="400" align="center"></p>
-<h3 id="多个DaDianNao结构的互连"><a href="#多个DaDianNao结构的互连" class="headerlink" title="多个DaDianNao结构的互连"></a>多个DaDianNao结构的互连</h3><p>DaDianNao的多片互连并不是定制的设计，而是直接使用现成的技术，即HyperTransport 2.0通信IP，在每个DaDianNao芯片的上下左右四周提供四组HT 2.0的通信通道，每个通道的通信带宽在in/out方向分别达到6.6GB/s，由于相互之间数据的交换，支持全双工通信且延迟为80ns。</p>
-<p>多片互连的结构可以支持大尺寸的网路模型，不同的模型在多片的模式下通信的数据量存在着较大的差异：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/差异.png" width="600" align="center"></p>
-<h2 id="相对于GPU的对比实验"><a href="#相对于GPU的对比实验" class="headerlink" title="相对于GPU的对比实验"></a>相对于GPU的对比实验</h2><p>下图是对模型训练的过程中不同的网络层在多片硬件上相对于GPU的加速的效果：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/trainingsp.png" width="400" align="center"></p>
-<p>下图是对模型前向过程中不同的网络层在多片硬件上相对于GPU的能耗比：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/eninference.png" width="400" align="center"></p>
-<p>下图是对模型训练的过程中不同的网络层在多片硬件上相对于GPU的能耗比：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/entraining.png" width="400" align="center"></p>
+        <p>&emsp;&emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。</p>
+<h2 id="DianNao项目之前："><a href="#DianNao项目之前：" class="headerlink" title="DianNao项目之前："></a>DianNao项目之前：</h2><p>&emsp;&emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技术、应用和机器学习发展的大势所趋。在2012年的ISCA上，Temam教授提出了第一个机器学习加速器设计，表明在以神经网络为基础的一大类应用上是可以以很小的面积和功耗获得高性能的。但此工作的主要局限性在于其内存带宽。</p>
+<h2 id="DianNao项目："><a href="#DianNao项目：" class="headerlink" title="DianNao项目："></a>DianNao项目：</h2><p>&emsp;&emsp;DianNao学术项目的目标是面向机器学习研究加速器架构。本项目是中科院计算所的陈云霁教授和法国Inria的Olivier Temam间的一个学术合作项目，双方为此设立了联合实验室。</p>
+<p>&emsp;&emsp;Temam教授和陈教授的合作始于第一个加速器，名为<font color="ff00"><a href="http://boogie.is.titech.ac.jp/lecture/lecture-wiki/index.php?plugin=attach&amp;refer=hpc2015&amp;openfile=DianNao.pdf" target="_blank" rel="noopener">DianNao</a></font>（这也是DianNao家族的第一个成员）。DianNao在ISCA-2012加速器的基础上增加了局部存储，使其可以捕捉深度神经网路的数据局部性并由此克服内存带宽的限制。DianNao加速器的设计发表于ASPLOS-2014，获得了该会议的最佳论文奖。</p>
+<p>&emsp;&emsp;DianNao家族的第二个加速器是DianNao的多片版本，有两个主要的设计目标：一是揭示神经网络层的可分特性使得加速器可具备极好的可扩展性，二是聚集足够多的片上存储来将整个机器学习模型都放在片上，从而克服内存带宽的限制。这个被称为<font color="ff00"><a href="http://novel.ict.ac.cn/ychen/pdf/DaDianNao.pdf" target="_blank" rel="noopener">DaDianNao</a></font>的设计发表在MICRO-2014上，获得了该会议的最佳论文奖。</p>
+<p>&emsp;&emsp;作为克服嵌入式应用中内存带宽限制的另一种方法，我们揭示可以通过加速器和传感器的直连来绕过内存。我们将此思想应用于视觉传感器，从而提出了DianNao家族的第三个加速器<font color="ff00"><a href="https://dl.acm.org/citation.cfm?doid=2749469.2750389" target="_blank" rel="noopener">ShiDianNao</a></font>，发表于2015年的ISCA上。</p>
+<p>&emsp;&emsp;最后，我们也揭示这类加速器的应用领域可以被拓展至多种机器学习算法，因为这些算法多具有类似的运算操作。相应的加速器设计称为<font color="#ff00"><a href="https://dl.acm.org/citation.cfm?doid=2694344.2694358" target="_blank" rel="noopener">PuDianNao</a></font>（DianNao家族的第四个以及最后一个成员），发表于ASPLOS-2015。</p>
+<h2 id="DianNao项目之后"><a href="#DianNao项目之后" class="headerlink" title="DianNao项目之后"></a>DianNao项目之后</h2><p>&emsp;&emsp;陈云霁教授和他的中科院计算所团队为一大类神经网络加速器设计了一套名为<font color="ff00"><a href="https://dl.acm.org/citation.cfm?id=3001179" target="_blank" rel="noopener">Cambricon的指令集</a></font>。该指令集发表于ISCA-2016，在该会议的同行评议中获得了最高分。</p>
+<p>&emsp;&emsp;同时针对深度学习模型中的稀疏化特点，又提出了一种对稀疏权重的矩阵运算加速的架构<a href="https://ieeexplore.ieee.org/document/7783723" target="_blank" rel="noopener">Cambricon-X</a>。</p>
 
       
     </div>
@@ -371,7 +357,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/AI芯片，深度学习/" rel="tag"># AI芯片，深度学习</a>
+            <a href="/tags/AI芯片，-深度学习/" rel="tag"># AI芯片， 深度学习</a>
           
         </div>
       
@@ -384,8 +370,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/" rel="next" title="论文-DianNao: A Small-Footprint High-Throughput Accelerator for Ubiquitous Machine-Learning">
-                <i class="fa fa-chevron-left"></i> 论文-DianNao: A Small-Footprint High-Throughput Accelerator for Ubiquitous Machine-Learning
+              <a href="/2019/03/18/第一篇博客/" rel="next" title="中科院计算所寒武纪团队DianNao系列论文导读">
+                <i class="fa fa-chevron-left"></i> 中科院计算所寒武纪团队DianNao系列论文导读
               </a>
             
           </div>
@@ -394,8 +380,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/" rel="prev" title="论文-ShiDianNao: Shifting Vision Processing Closer to the Sensor">
-                论文-ShiDianNao: Shifting Vision Processing Closer to the Sensor <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/21/论文-DianNao-A-Small-Footprint-High-Throughput-Accelerator-for-Ubiquitous-Machine-Learning/" rel="prev" title="论文-DianNao: A Small-Footprint High-Throughput Accelerator for Ubiquitous Machine-Learning">
+                论文-DianNao: A Small-Footprint High-Throughput Accelerator for Ubiquitous Machine-Learning <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -556,7 +542,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体硬件架构"><span class="nav-number">1.</span> <span class="nav-text">整体硬件架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单个DaDianNao结构的设计"><span class="nav-number">1.1.</span> <span class="nav-text">单个DaDianNao结构的设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个DaDianNao结构的互连"><span class="nav-number">1.2.</span> <span class="nav-text">多个DaDianNao结构的互连</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相对于GPU的对比实验"><span class="nav-number">2.</span> <span class="nav-text">相对于GPU的对比实验</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DianNao项目之前："><span class="nav-number">1.</span> <span class="nav-text">DianNao项目之前：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DianNao项目："><span class="nav-number">2.</span> <span class="nav-text">DianNao项目：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DianNao项目之后"><span class="nav-number">3.</span> <span class="nav-text">DianNao项目之后</span></a></li></ol></div>
             
 
           </div>
