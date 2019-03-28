@@ -89,7 +89,9 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/shidiannao架构.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/存储容量.jpg">
-<meta property="og:updated_time" content="2019-03-28T08:48:41.068Z">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/PE.png">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/pedata.png">
+<meta property="og:updated_time" content="2019-03-28T11:31:57.553Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-ShiDianNao: Shifting Vision Processing Closer to the Sensor">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;ShiDianNao这篇论文更像是针对具体应用场景的体系结构&amp;amp;优化的工作，但是对加速的的设计细节介绍的最为详细，无论是访存体系还是计算单元的设计都介绍的非常的细致。文章的主要思想：利用卷集神经网络(CNNs)权值共享的特性，将CNNs模型参数整体加载到SRAM构成的高速存储里，减少DRAM访问带来的开销;同时将加速器与视频图像传感器相连，减少额外的访存操作(传统模式">
@@ -335,11 +337,14 @@
 
       
         <p>&emsp;&emsp;ShiDianNao这篇论文更像是针对具体应用场景的体系结构&amp;优化的工作，但是对加速的的设计细节介绍的最为详细，无论是访存体系还是计算单元的设计都介绍的非常的细致。<strong>文章的主要思想：利用卷集神经网络(CNNs)权值共享的特性，将CNNs模型参数整体加载到SRAM构成的高速存储里，减少DRAM访问带来的开销;同时将加速器与视频图像传感器相连，减少额外的访存操作(传统模式：先将传感器采集的数据放入DRAM，然后通知加速器进行处理，在处理的过程中还要再一次的访问DRAM获取传感器数据)。</strong></p>
-<p><strong><font color="red">按照上面的思路，硬件的设计不可避免的会碰到以下问题：</font></strong><br><strong>1、SRAM被分配多大的容量？</strong> 既然要将CNNs模型参数整体加载到SRAM上，那么就会面对SRAM容量的取舍，容量大了功耗增加，芯片面积增加；容量过小，模型不能完全hold住，对计算性能带来影响。<br><strong>2、计算单元和CNNs如何映射？</strong> 最简单的方式就是每个神经元映射一个硬件的计算单元，但是CNNs模型的规模各不相同并且差别很大，在一定程度上限制了灵活性；另一种思路和之前的论文一致，采用基于时分复用的方式，执行计算和加载数据流水线的方式进行，而计算过程中是一次计算一个特定的feature map的output还是一次计算多个仍然是需要衡量的问题。<br><strong>3、Data locality是否眼进行深度的挖掘和优化？</strong> 数据局部性的优化处理也可能在一定程度上提高性能，如CNNs卷积层的计算过程中一组input neuron可能会被多个output neuron使用，所以在计算单元中引入一些本地存储可能会节省访存的开销，但同时会增加硬件设计的复杂度。</p>
-<p>ShiDianNao论文最大的贡献就是对以上问题都进行了分析和处理，给出了非常精巧的设计方案。</p>
+<p><strong><font color="red">按照上面的思路，硬件的设计不可避免的会碰到以下问题：</font></strong><br><strong>1、SRAM被分配多大的容量？</strong> 既然要将CNNs模型参数整体加载到SRAM上，那么就会面对SRAM容量的取舍，容量大了功耗增加，芯片面积增加；容量过小，模型不能完全hold住，对计算性能带来影响。<br><strong>2、计算单元和CNNs如何映射？</strong> 最简单的方式就是每个神经元映射一个硬件的计算单元，但是CNNs模型的规模各不相同并且差别很大，在一定程度上限制了灵活性；另一种思路和之前的论文一致，采用基于时分复用的方式，执行计算和加载数据流水线的方式进行，而计算过程中是一次计算一个特定的feature map的output还是一次计算多个仍然是需要衡量的问题。<br><strong>3、Data locality是否眼进行深度的挖掘和优化？</strong> 数据局部性的优化处理也可能在一定程度上提高性能，如CNNs卷积层的计算过程中一组input neuron可能会被多个output neuron使用，所以在计算单元中引入一些本地存储可能会节省访存的开销，但同时会增加硬件设计的复杂度。<br>ShiDianNao论文最大的贡献就是对以上问题都进行了分析和处理，给出了非常精巧的设计方案。</p>
 <h2 id="整体硬件架构"><a href="#整体硬件架构" class="headerlink" title="整体硬件架构"></a>整体硬件架构</h2><p>首先看一下ShiDianNao的整体硬件结构：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/shidiannao架构.png" width="400" align="center"></p>
 <p>左侧NBin/NBout/SB是SRAM快用于数据的存储，而具体每一部分的存储空间如下表所示：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/存储容量.jpg" width="250" align="center"></p>
-<p>DianNao系列的论文均采用类似的NBin/NBout/SB分离的方式，根据CNNs计算任务的特点，NBin存储input neuron，NBout存储output Neuron，SB存储模型参数。这三类存储，要求SB能够hold住模型全部的参数，NBin/NBout能够hold住完整的inpout/output neuron。因为模型的参数会被反复的使用，存在SRAM中可以减少从DRAM中加载数据时的时间开销，而输入数据中的raw data(input image)</p>
+<font color="red">这里最要解决的是问题1，也就是SRAM分配容量的问题，SB的size为128K，对于一般的CNNs网络是远远不够的，可能结合模型压缩算法可以解决该容量的问题。</font>
+
+<p>DianNao系列的论文均采用类似的NBin/NBout/SB分离的方式，根据CNNs计算任务的特点，NBin存储input neuron，NBout存储output Neuron，SB存储模型参数。这三类存储，要求SB能够hold住模型全部的参数，NBin/NBout能够hold住完整的inpout/output neuron。因为模型的参数会被反复的使用，存在SRAM中可以减少从DRAM中加载数据时的时间开销，而输入数据中的raw data(input image)处理一次之后不再使用，所以只需要每个网络层在计算的时候input/output neuron在SRAM中即可。</p>
+<p>芯片的右侧是NFU(Neural Functional Unit)，是由若干个PE组成的$x*y$大小的计算阵列，每个PE中有一个乘法器和一个加法器、若干个寄存器、两组用于在PE阵列水平/竖直方向进行数据交互的FIFO医护辅助的控制逻辑，具体的结构如下图：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/PE.png" width="400" align="center"><br>NFU的计算结果通过一个ALU写入到NBout中，ALU中实现并行度并不是很高的运算，如平均池化的除操作、非线性激活计算等，其中非线性激活运算采用分段函数进行插值近似，在精度损失很小的情况下获得更高的性能和功耗收益。</p>
+<p>NFU的PE阵列中对PE之间的data propagation进行了支持，引入改设计的目的是为了减少PE和SRAM之间的通信。对于卷积运算，同一个feature map的不同output neuron，stride没有超出kernel size的情况下，输入数据是由于部分是重复的，而PE间的data propagation引入就是为了将不同output neuron之间重复的那部分input neuron利用起来，从而减少SRAM访问的频率，可以很大程度上节省带宽，降低功耗，提升性能。其具体的收益如下图所示：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/pedata.png" width="400" align="center"></p>
 
       
     </div>
