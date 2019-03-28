@@ -280,6 +280,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/硬件设计/" itemprop="url" rel="index">
+                    <span itemprop="name">硬件设计</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -309,7 +331,13 @@
       
         
           
-            
+            <p>&emsp;&emsp;ShiDianNao这篇论文更像是针对具体应用场景的体系结构&amp;优化的工作，但是对加速的的设计细节介绍的最为详细，无论是访存体系还是计算单元的设计都介绍的非常的细致。<strong>文章的主要思想：利用卷集神经网络(CNNs)权值共享的特性，将CNNs模型参数整体加载到SRAM构成的高速存储里，减少DRAM访问带来的开销;同时将加速器与视频图像传感器相连，减少额外的访存操作(传统模式：先将传感器采集的数据放入DRAM，然后通知加速器进行处理，在处理的过程中还要再一次的访问DRAM获取传感器数据)。</strong></p>
+<p><strong><font color="red">按照上面的思路，硬件的设计不可避免的会碰到以下问题：</font></strong><br><strong>1、SRAM被分配多大的容量？</strong> 既然要将CNNs模型参数整体加载到SRAM上，那么就会面对SRAM容量的取舍，容量大了功耗增加，芯片面积增加；容量过小，模型不能完全hold住，对计算性能带来影响。<br><strong>2、计算单元和CNNs如何映射？</strong> 最简单的方式就是每个神经元映射一个硬件的计算单元，但是CNNs模型的规模各不相同并且差别很大，在一定程度上限制了灵活性；另一种思路和之前的论文一致，采用基于时分复用的方式，执行计算和加载数据流水线的方式进行，而计算过程中是一次计算一个特定的feature map的output还是一次计算多个仍然是需要衡量的问题。<br><strong>3、Data locality是否眼进行深度的挖掘和优化？</strong> 数据局部性的优化处理也可能在一定程度上提高性能，如CNNs卷积层的计算过程中一组input neuron可能会被多个output neuron使用，所以在计算单元中引入一些本地存储可能会节省访存的开销，但同时会增加硬件设计的复杂度。</p>
+<p>ShiDianNao论文最大的贡献就是对以上问题都进行了分析和处理，给出了非常精巧的设计方案。</p>
+<h2 id="整体硬件架构"><a href="#整体硬件架构" class="headerlink" title="整体硬件架构"></a>整体硬件架构</h2><p>首先看一下ShiDianNao的整体硬件结构：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/shidiannao架构.png" width="400" align="center"></p>
+<p>左侧NBin/NBout/SB是SRAM快用于数据的存储，而具体每一部分的存储空间如下表所示：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/存储容量.jpg" width="250" align="center"></p>
+<p>DianNao系列的论文均采用类似的NBin/NBout/SB分离的方式，根据CNNs计算任务的特点，NBin存储input neuron，NBout存储output Neuron，SB存储模型参数。这三类存储，要求SB能够hold住模型全部的参数，NBin/NBout能够hold住完整的inpout/output neuron。因为模型的参数会被反复的使用，存在SRAM中可以减少从DRAM中加载数据时的时间开销，而输入数据中的raw data(input image)</p>
+
           
         
       
