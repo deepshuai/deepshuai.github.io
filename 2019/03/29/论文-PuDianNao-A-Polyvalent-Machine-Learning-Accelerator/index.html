@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析加速器架构设计控制和代码生成实验及结果分析">
+<meta name="description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析k近邻算法k-means算法深度神经网络线性回归算法支持向量机算法朴素贝叶斯算法分类树算法加速器架构设计控制和代码生成实验及结果分析">
 <meta name="keywords" content="AI芯片， 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文-PuDianNao: A Polyvalent Machine Learning Accelerator">
 <meta property="og:url" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析加速器架构设计控制和代码生成实验及结果分析">
+<meta property="og:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析k近邻算法k-means算法深度神经网络线性回归算法支持向量机算法朴素贝叶斯算法分类树算法加速器架构设计控制和代码生成实验及结果分析">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-28T19:17:53.688Z">
+<meta property="og:updated_time" content="2019-03-30T06:05:33.938Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-PuDianNao: A Polyvalent Machine Learning Accelerator">
-<meta name="twitter:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析加速器架构设计控制和代码生成实验及结果分析">
+<meta name="twitter:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析k近邻算法k-means算法深度神经网络线性回归算法支持向量机算法朴素贝叶斯算法分类树算法加速器架构设计控制和代码生成实验及结果分析">
 
 
 
@@ -332,7 +332,7 @@
 
       
         <p>PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。</p>
-<h2 id="典型机器学习算法分析"><a href="#典型机器学习算法分析" class="headerlink" title="典型机器学习算法分析"></a>典型机器学习算法分析</h2><h2 id="加速器架构设计"><a href="#加速器架构设计" class="headerlink" title="加速器架构设计"></a>加速器架构设计</h2><h2 id="控制和代码生成"><a href="#控制和代码生成" class="headerlink" title="控制和代码生成"></a>控制和代码生成</h2><h2 id="实验及结果分析"><a href="#实验及结果分析" class="headerlink" title="实验及结果分析"></a>实验及结果分析</h2>
+<h2 id="典型机器学习算法分析"><a href="#典型机器学习算法分析" class="headerlink" title="典型机器学习算法分析"></a>典型机器学习算法分析</h2><h3 id="k近邻算法"><a href="#k近邻算法" class="headerlink" title="k近邻算法"></a>k近邻算法</h3><h3 id="k-means算法"><a href="#k-means算法" class="headerlink" title="k-means算法"></a>k-means算法</h3><h3 id="深度神经网络"><a href="#深度神经网络" class="headerlink" title="深度神经网络"></a>深度神经网络</h3><h3 id="线性回归算法"><a href="#线性回归算法" class="headerlink" title="线性回归算法"></a>线性回归算法</h3><h3 id="支持向量机算法"><a href="#支持向量机算法" class="headerlink" title="支持向量机算法"></a>支持向量机算法</h3><h3 id="朴素贝叶斯算法"><a href="#朴素贝叶斯算法" class="headerlink" title="朴素贝叶斯算法"></a>朴素贝叶斯算法</h3><h3 id="分类树算法"><a href="#分类树算法" class="headerlink" title="分类树算法"></a>分类树算法</h3><h2 id="加速器架构设计"><a href="#加速器架构设计" class="headerlink" title="加速器架构设计"></a>加速器架构设计</h2><h2 id="控制和代码生成"><a href="#控制和代码生成" class="headerlink" title="控制和代码生成"></a>控制和代码生成</h2><h2 id="实验及结果分析"><a href="#实验及结果分析" class="headerlink" title="实验及结果分析"></a>实验及结果分析</h2>
       
     </div>
     
@@ -530,7 +530,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#典型机器学习算法分析"><span class="nav-number">1.</span> <span class="nav-text">典型机器学习算法分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速器架构设计"><span class="nav-number">2.</span> <span class="nav-text">加速器架构设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制和代码生成"><span class="nav-number">3.</span> <span class="nav-text">控制和代码生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验及结果分析"><span class="nav-number">4.</span> <span class="nav-text">实验及结果分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#典型机器学习算法分析"><span class="nav-number">1.</span> <span class="nav-text">典型机器学习算法分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#k近邻算法"><span class="nav-number">1.1.</span> <span class="nav-text">k近邻算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k-means算法"><span class="nav-number">1.2.</span> <span class="nav-text">k-means算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深度神经网络"><span class="nav-number">1.3.</span> <span class="nav-text">深度神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性回归算法"><span class="nav-number">1.4.</span> <span class="nav-text">线性回归算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持向量机算法"><span class="nav-number">1.5.</span> <span class="nav-text">支持向量机算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#朴素贝叶斯算法"><span class="nav-number">1.6.</span> <span class="nav-text">朴素贝叶斯算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分类树算法"><span class="nav-number">1.7.</span> <span class="nav-text">分类树算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速器架构设计"><span class="nav-number">2.</span> <span class="nav-text">加速器架构设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制和代码生成"><span class="nav-number">3.</span> <span class="nav-text">控制和代码生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验及结果分析"><span class="nav-number">4.</span> <span class="nav-text">实验及结果分析</span></a></li></ol></div>
             
 
           </div>
