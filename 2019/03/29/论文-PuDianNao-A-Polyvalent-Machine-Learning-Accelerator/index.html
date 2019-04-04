@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析k近邻算法k-means算法深度神经网络线性回归算法支持向量机算法朴素贝叶斯算法分类树算法加速器架构设计控制和代码生成实验及结果分析">
+<meta name="description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器架构设计PuDianNao的整体硬件架构如下：PuD">
 <meta name="keywords" content="AI芯片， 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文-PuDianNao: A Polyvalent Machine Learning Accelerator">
 <meta property="og:url" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析k近邻算法k-means算法深度神经网络线性回归算法支持向量机算法朴素贝叶斯算法分类树算法加速器架构设计控制和代码生成实验及结果分析">
+<meta property="og:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器架构设计PuDianNao的整体硬件架构如下：PuD">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-30T06:05:33.938Z">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/MLU.png">
+<meta property="og:updated_time" content="2019-04-04T08:24:10.156Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-PuDianNao: A Polyvalent Machine Learning Accelerator">
-<meta name="twitter:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析k近邻算法k-means算法深度神经网络线性回归算法支持向量机算法朴素贝叶斯算法分类树算法加速器架构设计控制和代码生成实验及结果分析">
+<meta name="twitter:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器架构设计PuDianNao的整体硬件架构如下：PuD">
+<meta name="twitter:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png">
 
 
 
@@ -332,7 +335,11 @@
 
       
         <p>PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。</p>
-<h2 id="典型机器学习算法分析"><a href="#典型机器学习算法分析" class="headerlink" title="典型机器学习算法分析"></a>典型机器学习算法分析</h2><h3 id="k近邻算法"><a href="#k近邻算法" class="headerlink" title="k近邻算法"></a>k近邻算法</h3><h3 id="k-means算法"><a href="#k-means算法" class="headerlink" title="k-means算法"></a>k-means算法</h3><h3 id="深度神经网络"><a href="#深度神经网络" class="headerlink" title="深度神经网络"></a>深度神经网络</h3><h3 id="线性回归算法"><a href="#线性回归算法" class="headerlink" title="线性回归算法"></a>线性回归算法</h3><h3 id="支持向量机算法"><a href="#支持向量机算法" class="headerlink" title="支持向量机算法"></a>支持向量机算法</h3><h3 id="朴素贝叶斯算法"><a href="#朴素贝叶斯算法" class="headerlink" title="朴素贝叶斯算法"></a>朴素贝叶斯算法</h3><h3 id="分类树算法"><a href="#分类树算法" class="headerlink" title="分类树算法"></a>分类树算法</h3><h2 id="加速器架构设计"><a href="#加速器架构设计" class="headerlink" title="加速器架构设计"></a>加速器架构设计</h2><h2 id="控制和代码生成"><a href="#控制和代码生成" class="headerlink" title="控制和代码生成"></a>控制和代码生成</h2><h2 id="实验及结果分析"><a href="#实验及结果分析" class="headerlink" title="实验及结果分析"></a>实验及结果分析</h2>
+<h2 id="典型机器学习算法分析"><a href="#典型机器学习算法分析" class="headerlink" title="典型机器学习算法分析"></a>典型机器学习算法分析</h2><font color="red">论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。</font>
+
+<h2 id="加速器架构设计"><a href="#加速器架构设计" class="headerlink" title="加速器架构设计"></a>加速器架构设计</h2><p>PuDianNao的整体硬件架构如下：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png" width="500" align="center"><br>PuDianNao主要是由若干个功能单元(FUs)，每个FU均由一个MLU和一个ALU组成、三个数据缓存(Hot Buffer、Cold Buffer、Output Buffer)、一个指令缓存(Instruction Buffer)、一个控制模块以及DMA控制器等组成。</p>
+<p>Function Unit是PuDianDao的执行单元，每个FU均由一个MLU和一个ALU组成，MLU是用于机器学习算法的硬件定制，而ALU用于常规的计算控制任务。由此可见MLU的设计是机器学习算法加速的核心。针对机器学习的算法加速，MLU采用Counter、Adder、Multiplier、Adder tree、acc和Misc六级流水线，具体的流水线结构如下图所示：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/MLU.png" width="500" align="center"></p>
+<h2 id="控制和代码生成"><a href="#控制和代码生成" class="headerlink" title="控制和代码生成"></a>控制和代码生成</h2><h2 id="实验及结果分析"><a href="#实验及结果分析" class="headerlink" title="实验及结果分析"></a>实验及结果分析</h2>
       
     </div>
     
@@ -371,6 +378,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/" rel="prev" title="论文-Cambricon: An Instruction Set Architecture for Neural Networks">
+                论文-Cambricon: An Instruction Set Architecture for Neural Networks <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -475,7 +486,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -530,7 +541,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#典型机器学习算法分析"><span class="nav-number">1.</span> <span class="nav-text">典型机器学习算法分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#k近邻算法"><span class="nav-number">1.1.</span> <span class="nav-text">k近邻算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k-means算法"><span class="nav-number">1.2.</span> <span class="nav-text">k-means算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深度神经网络"><span class="nav-number">1.3.</span> <span class="nav-text">深度神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性回归算法"><span class="nav-number">1.4.</span> <span class="nav-text">线性回归算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持向量机算法"><span class="nav-number">1.5.</span> <span class="nav-text">支持向量机算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#朴素贝叶斯算法"><span class="nav-number">1.6.</span> <span class="nav-text">朴素贝叶斯算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分类树算法"><span class="nav-number">1.7.</span> <span class="nav-text">分类树算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速器架构设计"><span class="nav-number">2.</span> <span class="nav-text">加速器架构设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制和代码生成"><span class="nav-number">3.</span> <span class="nav-text">控制和代码生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验及结果分析"><span class="nav-number">4.</span> <span class="nav-text">实验及结果分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#典型机器学习算法分析"><span class="nav-number">1.</span> <span class="nav-text">典型机器学习算法分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速器架构设计"><span class="nav-number">2.</span> <span class="nav-text">加速器架构设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制和代码生成"><span class="nav-number">3.</span> <span class="nav-text">控制和代码生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验及结果分析"><span class="nav-number">4.</span> <span class="nav-text">实验及结果分析</span></a></li></ol></div>
             
 
           </div>
