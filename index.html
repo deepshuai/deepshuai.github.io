@@ -454,7 +454,7 @@
 <h2 id="ISA介绍"><a href="#ISA介绍" class="headerlink" title="ISA介绍"></a>ISA介绍</h2><h3 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h3><p>Combricon为64-bit的定长指令集架构，指令集整体分为四个大类，分别是控制类指令/数据存取类指令/算术计算类指令/逻辑运算类指令。大致的分类如下表所示：</p>
 <p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png" width="700" align="center"></p>
 <p><strong>控制指令：</strong> 分为两种，jump和conditional branch。</p>
-<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlISA.png" width="400" align="center"></p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlIS.png" width="400" align="center"></p>
 <p><strong>数据存取指令：</strong> 支持标量、向量和矩阵三种数据形式，三种数据形式分别支持load/store/move三种操作。其中load是将一定规模的数据从main memory加载到on-chip scratchpad memory，store的数据流动方向刚好相反，而move指令是数据在calar GPRs和on-chip scratchpad memory之间的存取。下图是vector load指令：</p>
 <p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png" width="400" align="center"></p>
 <p><strong>算术计算指令/逻辑计算指令</strong> 作为设计的重点后面章节具体介绍。</p>
