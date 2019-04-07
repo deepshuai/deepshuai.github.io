@@ -88,9 +88,9 @@
 <meta property="og:description" content="Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlIS.png">
+<meta property="og:image" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlISA.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png">
-<meta property="og:updated_time" content="2019-04-07T12:34:03.131Z">
+<meta property="og:updated_time" content="2019-04-07T12:34:18.910Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-Cambricon: An Instruction Set Architecture for Neural Networks">
 <meta name="twitter:description" content="Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用">
@@ -339,7 +339,7 @@
 <h2 id="ISA介绍"><a href="#ISA介绍" class="headerlink" title="ISA介绍"></a>ISA介绍</h2><h3 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h3><p>Combricon为64-bit的定长指令集架构，指令集整体分为四个大类，分别是控制类指令/数据存取类指令/算术计算类指令/逻辑运算类指令。大致的分类如下表所示：</p>
 <p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png" width="700" align="center"></p>
 <p><strong>控制指令：</strong> 分为两种，jump和conditional branch。</p>
-<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlIS.png" width="400" align="center"></p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlISA.png" width="400" align="center"></p>
 <p><strong>数据存取指令：</strong> 支持标量、向量和矩阵三种数据形式，三种数据形式分别支持load/store/move三种操作。其中load是将一定规模的数据从main memory加载到on-chip scratchpad memory，store的数据流动方向刚好相反，而move指令是数据在calar GPRs和on-chip scratchpad memory之间的存取。下图是vector load指令：</p>
 <p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png" width="400" align="center"></p>
 <p><strong>算术计算指令/逻辑计算指令</strong> 作为设计的重点后面章节具体介绍。</p>
