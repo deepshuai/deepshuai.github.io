@@ -238,7 +238,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/">
+    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Deepshuai">
@@ -257,7 +257,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/" itemprop="url">论文-Cambricon-X: An Accelerator for Sparse Neural Networks</a></h1>
+                <a class="post-title-link" href="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/" itemprop="url">论文-Cambricon-X: An Accelerator for Sparse Neural Networks</a></h1>
         
 
         <div class="post-meta">
@@ -269,8 +269,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-02T16:06:55+08:00">
-                2019-04-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-06T16:06:55+08:00">
+                2019-04-06
               </time>
             
 
@@ -333,21 +333,21 @@
           
             <p>Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。</p>
 <p>Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元，需要找到另一个feature map里相同位置的输出神经元代替，这会导致用于管理输出神经元的地址对齐逻辑变得比较复杂，在Cambricon-X的硬件层面并没有做这个支持，于是相应的支持不得不上推到软件层面，这就引入了额外的开销，减少了性能加速的收益。</p>
-<h2 id="整体架构图"><a href="#整体架构图" class="headerlink" title="整体架构图"></a>整体架构图</h2><p>下图是加速器的主架构图，回忆之前的DianNao论文，整体的硬件架构基本相同，只是在数据缓存NBin/NBout和计算单元之间加入了Buffer Controller逻辑，专门用于完成稀疏访存操作。<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/加速器架构图.png" width="500" align="center"></p>
-<p>下图是Buffer Controller的内部设计结构图：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/BufferController.png" width="500" align="center"><br>其中Indexing模块要做的就是根据权重的稀疏程度对输入神经元进行稀疏访存选取，并将访存结果送入计算引擎单元(PE)里的工作了。</p>
-<p>PE的内部结构图如下：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PE.png" width="400" align="center"><br>其中SB(Synapse Buffer)用于供给计算过程中所需的权重信息（虽然因为加速器片上内存有限，无法在SB里存放所有权重，但是权重仍然比神经元有更强的重复访问特性，所以会在SB里进行记录，想象一下卷积层的weight sharing机制或是RNN的weight在多个time step之间sharing的特性），PEFU则是计算逻辑的硬件实现了，本质上PEFU就是一组乘加器的连接。</p>
-<p>而具体的PEFU内部的逻辑如下图所示：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PEFU.png" width="400" align="center"></p>
+<h2 id="整体架构图"><a href="#整体架构图" class="headerlink" title="整体架构图"></a>整体架构图</h2><p>下图是加速器的主架构图，回忆之前的DianNao论文，整体的硬件架构基本相同，只是在数据缓存NBin/NBout和计算单元之间加入了Buffer Controller逻辑，专门用于完成稀疏访存操作。<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/加速器架构图.png" width="500" align="center"></p>
+<p>下图是Buffer Controller的内部设计结构图：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/BufferController.png" width="500" align="center"><br>其中Indexing模块要做的就是根据权重的稀疏程度对输入神经元进行稀疏访存选取，并将访存结果送入计算引擎单元(PE)里的工作了。</p>
+<p>PE的内部结构图如下：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PE.png" width="400" align="center"><br>其中SB(Synapse Buffer)用于供给计算过程中所需的权重信息（虽然因为加速器片上内存有限，无法在SB里存放所有权重，但是权重仍然比神经元有更强的重复访问特性，所以会在SB里进行记录，想象一下卷积层的weight sharing机制或是RNN的weight在多个time step之间sharing的特性），PEFU则是计算逻辑的硬件实现了，本质上PEFU就是一组乘加器的连接。</p>
+<p>而具体的PEFU内部的逻辑如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PEFU.png" width="400" align="center"></p>
 <p>以上部分我们从外而内、由整体到部分的对整个的硬件架构作出了分析。</p>
-<h2 id="稀疏话的处理逻辑-Buffer-Controller"><a href="#稀疏话的处理逻辑-Buffer-Controller" class="headerlink" title="稀疏话的处理逻辑 Buffer Controller"></a>稀疏话的处理逻辑 Buffer Controller</h2><h3 id="硬件结构"><a href="#硬件结构" class="headerlink" title="硬件结构"></a>硬件结构</h3><p>如下图所示，Buffer Controller最主要的两个结构分别是IM和BCFU，<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/IM.png" width="700" align="center"></p>
-<p><strong>BCFU：</strong> 主要用来存储由IM模块选择的神经元。<br><strong>IM：</strong> 加速器的主要部件，只要是通过Indexing来选择需要保存的参数（非0的参数），简化的操作如下图所示：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/Indexing.png" width="500" align="center"></p>
+<h2 id="稀疏话的处理逻辑-Buffer-Controller"><a href="#稀疏话的处理逻辑-Buffer-Controller" class="headerlink" title="稀疏话的处理逻辑 Buffer Controller"></a>稀疏话的处理逻辑 Buffer Controller</h2><h3 id="硬件结构"><a href="#硬件结构" class="headerlink" title="硬件结构"></a>硬件结构</h3><p>如下图所示，Buffer Controller最主要的两个结构分别是IM和BCFU，<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/IM.png" width="700" align="center"></p>
+<p><strong>BCFU：</strong> 主要用来存储由IM模块选择的神经元。<br><strong>IM：</strong> 加速器的主要部件，只要是通过Indexing来选择需要保存的参数（非0的参数），简化的操作如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/Indexing.png" width="500" align="center"></p>
 <h3 id="稀疏存储方式"><a href="#稀疏存储方式" class="headerlink" title="稀疏存储方式"></a>稀疏存储方式</h3><p>常见的稀疏数据访问处理策略有Compressed Sparse Row(CSR)、Coordinate list(COO)、Compressed Sparse Column(CSC)、direct indexing以及step indexing。</p>
-<p>其中direct indexing的过程如图所示：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directIndexing.png" width="500" align="center"></p>
-<p>step indexing的过程如下图所示：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/stepIndexing.png" width="500" align="center"></p>
-<p>而使用CSR/CSC需要两个数组来存储Index，这在一定程度上消耗很多的存储，而对于dirct indexing和step indexing，通过不同长度的array实验，其结果如下：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directStep.png" width="500" align="center"><br>step indexing无论是所需的存储面积还是能耗都有着一定的有势，所以最终的设计采用step indexing的形式。</p>
+<p>其中direct indexing的过程如图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directIndexing.png" width="500" align="center"></p>
+<p>step indexing的过程如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/stepIndexing.png" width="500" align="center"></p>
+<p>而使用CSR/CSC需要两个数组来存储Index，这在一定程度上消耗很多的存储，而对于dirct indexing和step indexing，通过不同长度的array实验，其结果如下：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directStep.png" width="500" align="center"><br>step indexing无论是所需的存储面积还是能耗都有着一定的有势，所以最终的设计采用step indexing的形式。</p>
 <h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2><p>最后论文在LeNet、AlexNet以及VGG16等共六个网络上做了实验。对比的baseline分别选取了CPU(Xeon E5-2620 V2)、GPU（K20M）以及Diannao。并且分别在这几个网络的dense和sparse模型上做了评测，以验证Cambricon-X的通用性。 所有对额实验数据均是把Combricon-X的数据性能normalize为1，而与其他数据的比值取对数值，也就是数量级的对比。评测结果如下：</p>
-<p>下图是卷积层在各个硬件平台下的加速比：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/CONV.png" width="500" align="center"></p>
-<p>下图是全连接层/分类层在各个硬件平台下的加速比：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/FC.png" width="500" align="center"><br>从实验结果里能够看到，性能的提升还是相当amazing的。在Dense网络上，相较于CPU平均性能加速50X以上，相较于GPU平均性能加速5X以上。在Sparse网络上，相较于CPU平均性能加速140X以上，相较于GPU加速10X以上。</p>
-<p>下图是各个硬件平台下的功耗比：<br><img src="/2019/04/02/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/energyReduction.png" width="500" align="center"></p>
+<p>下图是卷积层在各个硬件平台下的加速比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/CONV.png" width="500" align="center"></p>
+<p>下图是全连接层/分类层在各个硬件平台下的加速比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/FC.png" width="500" align="center"><br>从实验结果里能够看到，性能的提升还是相当amazing的。在Dense网络上，相较于CPU平均性能加速50X以上，相较于GPU平均性能加速5X以上。在Sparse网络上，相较于CPU平均性能加速140X以上，相较于GPU加速10X以上。</p>
+<p>下图是各个硬件平台下的功耗比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/energyReduction.png" width="500" align="center"></p>
 
           
         
@@ -396,7 +396,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/">
+    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Deepshuai">
@@ -415,7 +415,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/" itemprop="url">论文-Cambricon: An Instruction Set Architecture for Neural Networks</a></h1>
+                <a class="post-title-link" href="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/" itemprop="url">论文-Cambricon: An Instruction Set Architecture for Neural Networks</a></h1>
         
 
         <div class="post-meta">
@@ -427,8 +427,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-02T16:06:26+08:00">
-                2019-04-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-05T16:06:26+08:00">
+                2019-04-05
               </time>
             
 
@@ -490,25 +490,25 @@
         
           
             <p>Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用到具体的场景之中的重要工作。<br>之后研究团队注册了公司，名字就是Cambricon，专注端+云的智能处理器生态的培养，而最核心的东西就是指令集，接下来具体了解一下在Cambricon指令集之上的处理器的设计细节。</p>
-<h2 id="ISA介绍"><a href="#ISA介绍" class="headerlink" title="ISA介绍"></a>ISA介绍</h2><h3 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h3><p>Combricon为64-bit的定长指令集架构，指令集整体分为四个大类，分别是控制类指令/数据存取类指令/算术计算类指令/逻辑运算类指令。大致的分类如下表所示：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png" width="700" align="center"></p>
-<p><strong>控制指令：</strong> 分为两种，jump和conditional branch。<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlISA.png" width="400" align="center"></p>
+<h2 id="ISA介绍"><a href="#ISA介绍" class="headerlink" title="ISA介绍"></a>ISA介绍</h2><h3 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h3><p>Combricon为64-bit的定长指令集架构，指令集整体分为四个大类，分别是控制类指令/数据存取类指令/算术计算类指令/逻辑运算类指令。大致的分类如下表所示：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png" width="700" align="center"></p>
+<p><strong>控制指令：</strong> 分为两种，jump和conditional branch。<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlISA.png" width="400" align="center"></p>
 <p><strong>数据存取指令：</strong> 支持标量、向量和矩阵三种数据形式，三种数据形式分别支持load/store/move三种操作。其中load是将一定规模的数据从main memory加载到on-chip scratchpad memory，store的数据流动方向刚好相反，而move指令是数据在calar GPRs和on-chip scratchpad memory之间的存取。下图是vector load指令：</p>
-<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png" width="400" align="center"><br><strong>算术计算指令/逻辑计算指令</strong> 作为设计的重点后面章节具体介绍。</p>
+<p><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png" width="400" align="center"><br><strong>算术计算指令/逻辑计算指令</strong> 作为设计的重点后面章节具体介绍。</p>
 <h2 id="计算-逻辑指令"><a href="#计算-逻辑指令" class="headerlink" title="计算/逻辑指令"></a>计算/逻辑指令</h2><h3 id="计算类指令"><a href="#计算类指令" class="headerlink" title="计算类指令"></a>计算类指令</h3><p>计算类指令主要是针对神经网络的常用计算逻辑提供了指令集的支持。比如矩阵与矩阵的相乘，矩阵与向量的相系，向量与向量的相乘，等等。这类指令的一个特点是，指令所操作数据的长度是不定长的，以灵活支持不同尺寸的矩阵和向量。</p>
 <p><strong>矩阵运算指令：</strong> 机器学习算法尤其是神经网络中如卷积运算是最常见的矩阵和矩阵的点乘运算，全连接层则是典型的矩阵和向量的计算。<br><strong>向量运算指令：</strong> 在完成如卷积计算这类的矩阵运算之后，需要对数据进行非线性的处理，这时需要向量层次的计算。如sigmoid激活函数，由于指数函数的存在，为了降低计算的复杂度，简化硬件设计的逻辑，采用Taylor展开式这种线性插值的方法。<br><strong>标量运算指令：</strong> 在GoogLeNet中仅仅有0.008%的计算操作通过矩阵/向量指令无法支持，即使如此Combicon也支持标量的操作。</p>
-<h3 id="逻辑操作指令"><a href="#逻辑操作指令" class="headerlink" title="逻辑操作指令"></a>逻辑操作指令</h3><p>逻辑类指令主要是针对向量或矩阵数据，完成逻辑判断操作。比如用于支持max-pooling的条件merge指令就可以对多组feature map，通过条件赋值，完成max-pooling的操作。比如下图是矩阵最大池化的指令操作：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/LogicISA.png" width="400" align="center"></p>
-<h3 id="code示例"><a href="#code示例" class="headerlink" title="code示例"></a>code示例</h3><p>下面一段指令代码是多层感知机的操作过程：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/MLP.png" width="400" align="center"><br>最大池化的代码：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/MaxPool.png" width="400" align="center"></p>
-<h2 id="加速器设计"><a href="#加速器设计" class="headerlink" title="加速器设计"></a>加速器设计</h2><p>下图是Combricon加速器设计的原型：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/acc.png" width="400" align="center"><br>该原型类似于标准的MIPS指令集的流水线结构实现，由取指、译码、发射、寄存器访问、执行、写回结果、提交七级流水组成，没有支持乱序执行。为了优化数据存取的信息，在Scratchpad Memory和矩阵/向量计算部件之间通过DMA来加速数据传输的效率。在结构图里，引入了一个L1 Cache，主要是为标量数据的存取提供Cache支持，可以理解为标量数据的data locality会比matrix/vector数据要强，所以对这种场景提供cache支持有助于系统整体性能的保证，而考虑到标量数据上的操作在神经网络中的整体操作里占比不高(GoogLeNet&lt;0.008%)，所以cache的控制逻辑也可以适当简化，这是一个设计的trade-off。</p>
+<h3 id="逻辑操作指令"><a href="#逻辑操作指令" class="headerlink" title="逻辑操作指令"></a>逻辑操作指令</h3><p>逻辑类指令主要是针对向量或矩阵数据，完成逻辑判断操作。比如用于支持max-pooling的条件merge指令就可以对多组feature map，通过条件赋值，完成max-pooling的操作。比如下图是矩阵最大池化的指令操作：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/LogicISA.png" width="400" align="center"></p>
+<h3 id="code示例"><a href="#code示例" class="headerlink" title="code示例"></a>code示例</h3><p>下面一段指令代码是多层感知机的操作过程：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/MLP.png" width="400" align="center"><br>最大池化的代码：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/MaxPool.png" width="400" align="center"></p>
+<h2 id="加速器设计"><a href="#加速器设计" class="headerlink" title="加速器设计"></a>加速器设计</h2><p>下图是Combricon加速器设计的原型：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/acc.png" width="400" align="center"><br>该原型类似于标准的MIPS指令集的流水线结构实现，由取指、译码、发射、寄存器访问、执行、写回结果、提交七级流水组成，没有支持乱序执行。为了优化数据存取的信息，在Scratchpad Memory和矩阵/向量计算部件之间通过DMA来加速数据传输的效率。在结构图里，引入了一个L1 Cache，主要是为标量数据的存取提供Cache支持，可以理解为标量数据的data locality会比matrix/vector数据要强，所以对这种场景提供cache支持有助于系统整体性能的保证，而考虑到标量数据上的操作在神经网络中的整体操作里占比不高(GoogLeNet&lt;0.008%)，所以cache的控制逻辑也可以适当简化，这是一个设计的trade-off。</p>
 <h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2><p>在十种机器学习算法上进行实验，Benchmark如下表：</p>
-<h3 id="Benchmarks"><a href="#Benchmarks" class="headerlink" title="Benchmarks"></a>Benchmarks</h3><p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/Benchmarks.png" width="400" align="center"></p>
-<p>每种算法中各种指令的比例：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/percentageISA.png" width="500" align="center"></p>
+<h3 id="Benchmarks"><a href="#Benchmarks" class="headerlink" title="Benchmarks"></a>Benchmarks</h3><p><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/Benchmarks.png" width="400" align="center"></p>
+<p>每种算法中各种指令的比例：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/percentageISA.png" width="500" align="center"></p>
 <h3 id="硬件平台"><a href="#硬件平台" class="headerlink" title="硬件平台"></a>硬件平台</h3><p><strong>CPU：</strong> The CPU baseline is an x86-CPU with 256-bit SIMD support (Intel Xeon E5-2620, 2.10GHz, 64 GB memory)。<br><strong>GPU：</strong> The GPU baseline is a modern GPU card (NVIDI- A K40M, 12GB GDDR5, 4.29 TFlops peak at a 28nm process)。<br><strong>NN Accelerator：</strong> DaDianNao，65nm process， single central tile and a total of 32 leaf tiles. The central tile has 64KB SRAM, 32 16-bit adders and 32 16-bit multipliers; Each leaf tile has 24KB SRAM, 32 16-bit adders and 32 16-bit multipliers.</p>
 <p><strong>本文的Combricon</strong></p>
-<p>下图是代码长度的比较：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/codeLen.png" width="500" align="center"></p>
-<p>下图是加速比：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/SpeedUp.png" width="500" align="center"></p>
-<p>下图是功耗比：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/eneReduction.png" width="400" align="center"></p>
+<p>下图是代码长度的比较：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/codeLen.png" width="500" align="center"></p>
+<p>下图是加速比：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/SpeedUp.png" width="500" align="center"></p>
+<p>下图是功耗比：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/eneReduction.png" width="400" align="center"></p>
 <p>从整个实验的结果来看，由于采用的64-bit定长精简指令集，代码长度相对于CPU和GPU以及之前的NN加速器都有数量级的提升，Combricon相对于CPU和GPU都有显著的性能的提升，整个加速效果和DaDianNao相当，由于大电脑支持的机器学习算法并不全面，部分数据无法反映。功耗是Combicon和DaDianNao的一大优势，相对于GPU而言，有两个数量级的提升。</p>
-<h3 id="芯片面积以及功耗占比"><a href="#芯片面积以及功耗占比" class="headerlink" title="芯片面积以及功耗占比"></a>芯片面积以及功耗占比</h3><p>下图是基于Cambricon指令集的芯片layout，也就是每个功能模块在最终芯片上占据了多少比例的实地面积以及对应功耗，从下面这张图来看，无论是从芯片面积占比上还是从功耗占比来看，矩阵部分都是大头，这也比较符合我们对芯片上运行的workload的直觉理解。<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/Layout.png" width="400" align="center"></p>
+<h3 id="芯片面积以及功耗占比"><a href="#芯片面积以及功耗占比" class="headerlink" title="芯片面积以及功耗占比"></a>芯片面积以及功耗占比</h3><p>下图是基于Cambricon指令集的芯片layout，也就是每个功能模块在最终芯片上占据了多少比例的实地面积以及对应功耗，从下面这张图来看，无论是从芯片面积占比上还是从功耗占比来看，矩阵部分都是大头，这也比较符合我们对芯片上运行的workload的直觉理解。<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/Layout.png" width="400" align="center"></p>
 
           
         
