@@ -458,7 +458,35 @@
 <p><strong>数据存取指令：</strong> 支持标量、向量和矩阵三种数据形式，三种数据形式分别支持load/store/move三种操作。其中load是将一定规模的数据从main memory加载到on-chip scratchpad memory，store的数据流动方向刚好相反，而move指令是数据在calar GPRs和on-chip scratchpad memory之间的存取。下图是vector load指令：</p>
 <p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png" width="400" align="center"></p>
 <p><strong>算术计算指令/逻辑计算指令</strong> 作为设计的重点后面章节具体介绍。</p>
-<h2 id="计算-逻辑指令"><a href="#计算-逻辑指令" class="headerlink" title="计算/逻辑指令"></a>计算/逻辑指令</h2><h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2>
+<h2 id="计算-逻辑指令"><a href="#计算-逻辑指令" class="headerlink" title="计算/逻辑指令"></a>计算/逻辑指令</h2><h3 id="计算类指令"><a href="#计算类指令" class="headerlink" title="计算类指令"></a>计算类指令</h3><p>计算类指令主要是针对神经网络的常用计算逻辑提供了指令集的支持。比如矩阵与矩阵的相乘，矩阵与向量的相系，向量与向量的相乘，等等。这类指令的一个特点是，指令所操作数据的长度是不定长的，以灵活支持不同尺寸的矩阵和向量。</p>
+<p><strong>矩阵运算指令：</strong> 机器学习算法尤其是神经网络中如卷积运算是最常见的矩阵和矩阵的点乘运算，全连接层则是典型的矩阵和向量的计算。</p>
+<p><strong>向量运算指令：</strong> 在完成如卷积计算这类的矩阵运算之后，需要对数据进行非线性的处理，这时需要向量层次的计算。如sigmoid激活函数，由于指数函数的存在，为了降低计算的复杂度，简化硬件设计的逻辑，采用Taylor展开式这种线性插值的方法。</p>
+<p><strong>标量运算指令：</strong> 在GoogLeNet中仅仅有0.008%的计算操作通过矩阵/向量指令无法支持，即使如此Combicon也支持标量的操作。</p>
+<h3 id="逻辑操作指令"><a href="#逻辑操作指令" class="headerlink" title="逻辑操作指令"></a>逻辑操作指令</h3><p>逻辑类指令主要是针对向量或矩阵数据，完成逻辑判断操作。比如用于支持max-pooling的条件merge指令就可以对多组feature map，通过条件赋值，完成max-pooling的操作。比如下图是矩阵最大池化的指令操作：<br><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/LogicISA.png" width="400" align="center"></p>
+<h3 id="code示例"><a href="#code示例" class="headerlink" title="code示例"></a>code示例</h3><p>下面一段指令代码是多层感知机的操作过程：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/MLP.png" width="400" align="center"></p>
+<p>最大池化的代码：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/MaxPool.png" width="400" align="center"></p>
+<h2 id="加速器设计"><a href="#加速器设计" class="headerlink" title="加速器设计"></a>加速器设计</h2><p>下图是Combricon加速器设计的原型：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/acc.png" width="400" align="center"><br>该原型类似于标准的MIPS指令集的流水线结构实现，由取指、译码、发射、寄存器访问、执行、写回结果、提交七级流水组成，没有支持乱序执行。为了优化数据存取的信息，在Scratchpad Memory和矩阵/向量计算部件之间通过DMA来加速数据传输的效率。在结构图里，引入了一个L1 Cache，主要是为标量数据的存取提供Cache支持，可以理解为标量数据的data locality会比matrix/vector数据要强，所以对这种场景提供cache支持有助于系统整体性能的保证，而考虑到标量数据上的操作在神经网络中的整体操作里占比不高(GoogLeNet&lt;0.008%)，所以cache的控制逻辑也可以适当简化，这是一个设计的trade-off。</p>
+<h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2><p>在十种机器学习算法上进行实验，Benchmark如下表：</p>
+<h3 id="Benchmarks"><a href="#Benchmarks" class="headerlink" title="Benchmarks"></a>Benchmarks</h3><p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/Benchmarks.png" width="400" align="center"></p>
+<p>每种算法中各种指令的比例：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/percentageISA.png" width="500" align="center"></p>
+<h3 id="硬件平台"><a href="#硬件平台" class="headerlink" title="硬件平台"></a>硬件平台</h3><p><strong>CPU：</strong> The CPU baseline is an x86-CPU with 256-bit SIMD support (Intel Xeon E5-2620, 2.10GHz, 64 GB memory)。</p>
+<p><strong>GPU：</strong> The GPU baseline is a modern GPU card (NVIDI- A K40M, 12GB GDDR5, 4.29 TFlops peak at a 28nm process)。</p>
+<p><strong>NN Accelerator：</strong> DaDianNao，65nm process， single central tile and a total of 32 leaf tiles. The central tile has 64KB SRAM, 32 16-bit adders and 32 16-bit multipliers; Each leaf tile has 24KB SRAM, 32 16-bit adders and 32 16-bit multipliers.</p>
+<p><strong>本文的Combricon</strong></p>
+<p>下图是代码长度的比较：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/codeLen.png" width="500" align="center"></p>
+<p>下图是加速比：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/SpeedUp.png" width="500" align="center"></p>
+<p>下图是功耗比：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/eneReduction.png" width="400" align="center"></p>
+<p>从整个实验的结果来看，由于采用的64-bit定长精简指令集，代码长度相对于CPU和GPU以及之前的NN加速器都有数量级的提升，Combricon相对于CPU和GPU都有显著的性能的提升，整个加速效果和DaDianNao相当，由于大电脑支持的机器学习算法并不全面，部分数据无法反映。功耗是Combicon和DaDianNao的一大优势，相对于GPU而言，有两个数量级的提升。</p>
+<h3 id="芯片面积以及功耗占比"><a href="#芯片面积以及功耗占比" class="headerlink" title="芯片面积以及功耗占比"></a>芯片面积以及功耗占比</h3><p>下图是基于Cambricon指令集的芯片layout，也就是每个功能模块在最终芯片上占据了多少比例的实地面积以及对应功耗，从下面这张图来看，无论是从芯片面积占比上还是从功耗占比来看，矩阵部分都是大头，这也比较符合我们对芯片上运行的workload的直觉理解。</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/Layout.png" width="400" align="center"></p>
+
           
         
       
