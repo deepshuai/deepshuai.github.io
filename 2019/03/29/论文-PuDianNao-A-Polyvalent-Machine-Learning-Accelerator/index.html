@@ -79,20 +79,23 @@
 
 
 
-<meta name="description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器架构设计PuDianNao的整体硬件架构如下：PuD">
+<meta name="description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器整体架构设计PuDianNao的整体硬件架构如下：P">
 <meta name="keywords" content="AI芯片， 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文-PuDianNao: A Polyvalent Machine Learning Accelerator">
 <meta property="og:url" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器架构设计PuDianNao的整体硬件架构如下：PuD">
+<meta property="og:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器整体架构设计PuDianNao的整体硬件架构如下：P">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/MLU.png">
-<meta property="og:updated_time" content="2019-04-04T08:24:10.156Z">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/precision.png">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/InstName.png">
+<meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/InstKmeans.png">
+<meta property="og:updated_time" content="2019-04-07T06:47:16.095Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-PuDianNao: A Polyvalent Machine Learning Accelerator">
-<meta name="twitter:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器架构设计PuDianNao的整体硬件架构如下：PuD">
+<meta name="twitter:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器整体架构设计PuDianNao的整体硬件架构如下：P">
 <meta name="twitter:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png">
 
 
@@ -337,9 +340,14 @@
         <p>PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。</p>
 <h2 id="典型机器学习算法分析"><a href="#典型机器学习算法分析" class="headerlink" title="典型机器学习算法分析"></a>典型机器学习算法分析</h2><font color="red">论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。</font>
 
-<h2 id="加速器架构设计"><a href="#加速器架构设计" class="headerlink" title="加速器架构设计"></a>加速器架构设计</h2><p>PuDianNao的整体硬件架构如下：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png" width="500" align="center"><br>PuDianNao主要是由若干个功能单元(FUs)，每个FU均由一个MLU和一个ALU组成、三个数据缓存(Hot Buffer、Cold Buffer、Output Buffer)、一个指令缓存(Instruction Buffer)、一个控制模块以及DMA控制器等组成。</p>
-<p>Function Unit是PuDianDao的执行单元，每个FU均由一个MLU和一个ALU组成，MLU是用于机器学习算法的硬件定制，而ALU用于常规的计算控制任务。由此可见MLU的设计是机器学习算法加速的核心。针对机器学习的算法加速，MLU采用Counter、Adder、Multiplier、Adder tree、acc和Misc六级流水线，具体的流水线结构如下图所示：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/MLU.png" width="500" align="center"></p>
-<h2 id="控制和代码生成"><a href="#控制和代码生成" class="headerlink" title="控制和代码生成"></a>控制和代码生成</h2><h2 id="实验及结果分析"><a href="#实验及结果分析" class="headerlink" title="实验及结果分析"></a>实验及结果分析</h2>
+<h2 id="加速器整体架构设计"><a href="#加速器整体架构设计" class="headerlink" title="加速器整体架构设计"></a>加速器整体架构设计</h2><p>PuDianNao的整体硬件架构如下：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png" width="500" align="center"><br>PuDianNao主要是由若干个功能单元(FUs)，每个FU均由一个MLU和一个ALU组成、三个数据缓存(Hot Buffer、Cold Buffer、Output Buffer)、一个指令缓存(Instruction Buffer)、一个控制模块以及DMA控制器等组成。</p>
+<h3 id="功能单元-Function-Unit"><a href="#功能单元-Function-Unit" class="headerlink" title="功能单元 Function Unit"></a>功能单元 Function Unit</h3><p>Function Unit是PuDianDao的执行单元，每个FU均由一个MLU和一个ALU组成，MLU是用于机器学习算法的硬件定制，而ALU用于常规的计算控制任务。由此可见MLU的设计是机器学习算法加速的核心。针对机器学习的算法加速，MLU采用Counter、Adder、Multiplier、Adder tree、acc和Misc六级流水线，具体的流水线结构如下图所示：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/MLU.png" width="500" align="center"><br>关于流水线的设计，并不是所有的算法都会全部用到流水线的每一级，但流水线将算法所设计的主要运算包含在内。尤其是Multiplier 和 Adder Tree的流水线的组合对dot product提供了支持，这种向量/矩阵dot product是LR/SVM/DNN算法中的高频操作；对于数据的宽度大于硬件逻辑宽度的时候，通过ACC对partial sum进行缓存；而Misc流水段通过了非线性激活函数(sigmod/tanh/ReLU)的线性插值近似操作和top-k/tail-k的功能。</p>
+<p>相对于MLU流水线的设计，ALU的设计相对简单，主要实现MLU中未支持的逻辑运算操作，主要是机器学习算法中的非高频操作。这里的设计思路可能是说：<strong>作为机器学习加速器，通常的做法是将机器学习的高频计算放在加速器上完成，而非高频的逻辑操作和控制逻辑放在宿主CPU上完成，这里添加ALU主要是为了让加速器尽可能独立的处理机器学习算法，减少宿主CPU和加速器MLU之间的协同交互开销。</strong></p>
+<h3 id="数据位宽"><a href="#数据位宽" class="headerlink" title="数据位宽"></a>数据位宽</h3><p>为了减少芯片的面积、降低功耗、增加数据吞吐量、提高计算速度、减少通信带宽，PuDianNao采用mixed precision，在流水线的Adder/Multiplier/Adder tree这三个stage支持16位的浮点运算，而对Counter/Acc/Misc这三个stage仍然使用32位的浮点数。主要的考虑因素是Counter/Acc/Misc分别靠输入数据和最终的结果数据很近，容易出现溢出现象，而Adder/Multiplier/Adder tree最为中间结果，溢出的风险较小，这也是一种设计在精度和加速性能之间的权衡。<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/precision.png" width="400" align="center"><br>由上表可以看出，采用fp16和fp32的混合精度计算的算法精度和全精度相比没有特别大的精度损失。<strong><font color="red">这里推荐一篇NVIDIA的混合精度训练神经网络以及指导硬件设计的论文：<a href="https://arxiv.org/abs/1710.03740" target="_blank" rel="noopener">Mixed Precision Training</a>，该方法训练过程中通过一些额外的trick可以进一步避免因fp16低精度带来的算法性能损失，这里不展开介绍。</font></strong></p>
+<h3 id="缓存设计"><a href="#缓存设计" class="headerlink" title="缓存设计"></a>缓存设计</h3><p>PuDianNao中包含是三个数据缓存(HotBuf、ColdBuf、OutputBuf)和一个指令缓存(InstBuf)。除了将指令缓存和数据缓存分开，同时将数据缓存进行进一步的划分，主要考虑的是一方面机器学习算法多是SIMD的计算形式，对数据的带宽要求远远大于指令缓存的带宽；另一方面，数据带宽进行更加细粒度的划分，是因为计算任务中数据复用程度不同，需要的带宽不相同。同时，为了进一步的降低功耗和芯片的面积，HotBuf和ColdBuf由于只进行读操作，因此采用但端口的SRAM（只读），而OutputBuf要支持读写操作，采用双端口的SRAM（可读写）。</p>
+<h2 id="控制和代码生成"><a href="#控制和代码生成" class="headerlink" title="控制和代码生成"></a>控制和代码生成</h2><p>PuDiannao的Control Module起到指令译码和任务分发的功能。PuDianNao通过Control Module来对计算任务进行描述，将指令进行译码并将需要执行的操作发送给FU。<strong><font color="red">这里需要注意的是，到PuDianNao论文的时候，寒武纪团队还没有针对加速器设计提出一整套的指令集的设计，所以要对每种算发的计算过程进行指令抽象，指令级别的编程要对硬件的架构非常的了解，这也是后面<a href="https://dl.acm.org/citation.cfm?id=3001179" target="_blank" rel="noopener">Cambricon的指令集</a>论文出现让整个硬件设计大规模的工业应用成为可能。</font></strong></p>
+<p>下表是PuDianNao中涉及到的指令：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/InstName.png" width="500" align="center"><br>而基于以上指令的K-Means算法的实现如下表所示：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/InstKmeans.png" width="500" align="center"></p>
+<h2 id="实验及结果分析"><a href="#实验及结果分析" class="headerlink" title="实验及结果分析"></a>实验及结果分析</h2>
       
     </div>
     
@@ -541,7 +549,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#典型机器学习算法分析"><span class="nav-number">1.</span> <span class="nav-text">典型机器学习算法分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速器架构设计"><span class="nav-number">2.</span> <span class="nav-text">加速器架构设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制和代码生成"><span class="nav-number">3.</span> <span class="nav-text">控制和代码生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验及结果分析"><span class="nav-number">4.</span> <span class="nav-text">实验及结果分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#典型机器学习算法分析"><span class="nav-number">1.</span> <span class="nav-text">典型机器学习算法分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速器整体架构设计"><span class="nav-number">2.</span> <span class="nav-text">加速器整体架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#功能单元-Function-Unit"><span class="nav-number">2.1.</span> <span class="nav-text">功能单元 Function Unit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据位宽"><span class="nav-number">2.2.</span> <span class="nav-text">数据位宽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存设计"><span class="nav-number">2.3.</span> <span class="nav-text">缓存设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制和代码生成"><span class="nav-number">3.</span> <span class="nav-text">控制和代码生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验及结果分析"><span class="nav-number">4.</span> <span class="nav-text">实验及结果分析</span></a></li></ol></div>
             
 
           </div>
