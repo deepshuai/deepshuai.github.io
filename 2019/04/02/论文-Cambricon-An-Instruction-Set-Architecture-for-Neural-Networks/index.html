@@ -79,15 +79,22 @@
 
 
 
+<meta name="description" content="Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用">
 <meta name="keywords" content="AI芯片， 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文-Cambricon: An Instruction Set Architecture for Neural Networks">
 <meta property="og:url" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
+<meta property="og:description" content="Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-07T07:36:42.123Z">
+<meta property="og:image" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png">
+<meta property="og:image" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/controlISA.png">
+<meta property="og:image" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png">
+<meta property="og:updated_time" content="2019-04-07T12:30:55.983Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-Cambricon: An Instruction Set Architecture for Neural Networks">
+<meta name="twitter:description" content="Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用">
+<meta name="twitter:image" content="https://deepshuai.github.io/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png">
 
 
 
@@ -328,7 +335,14 @@
       
 
       
-        
+        <p>Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用到具体的场景之中的重要工作。<br>之后研究团队注册了公司，名字就是Cambricon，专注端+云的智能处理器生态的培养，而最核心的东西就是指令集，接下来具体了解一下在Cambricon指令集之上的处理器的设计细节。</p>
+<h2 id="ISA介绍"><a href="#ISA介绍" class="headerlink" title="ISA介绍"></a>ISA介绍</h2><h3 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h3><p>Combricon为64-bit的定长指令集架构，指令集整体分为四个大类，分别是控制类指令/数据存取类指令/算术计算类指令/逻辑运算类指令。大致的分类如下表所示：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png" width="700" align="center"></p>
+<p><strong>控制指令：</strong> 分为两种，jump和conditional branch。</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/controlISA.png" width="400" align="center"></p>
+<p><strong>数据存取指令：</strong> 支持标量、向量和矩阵三种数据形式，三种数据形式分别支持load/store/move三种操作。其中load是将一定规模的数据从main memory加载到on-chip scratchpad memory，store的数据流动方向刚好相反，而move指令是数据在calar GPRs和on-chip scratchpad memory之间的存取。下图是vector load指令：</p>
+<p><img src="/2019/04/02/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png" width="400" align="center"></p>
+<h2 id="计算-逻辑指令"><a href="#计算-逻辑指令" class="headerlink" title="计算/逻辑指令"></a>计算/逻辑指令</h2><h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2>
       
     </div>
     
@@ -448,8 +462,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -511,6 +534,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ISA介绍"><span class="nav-number">1.</span> <span class="nav-text">ISA介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#整体介绍"><span class="nav-number">1.1.</span> <span class="nav-text">整体介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算-逻辑指令"><span class="nav-number">2.</span> <span class="nav-text">计算/逻辑指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验评估"><span class="nav-number">3.</span> <span class="nav-text">实验评估</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
