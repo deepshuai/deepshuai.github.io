@@ -333,7 +333,7 @@
           
             <h1 id="写在最前面"><a href="#写在最前面" class="headerlink" title="写在最前面"></a>写在最前面</h1><p>&emsp;&emsp;git之前有使用过，但多局限于一些简单的指令，对其更深更全面的背后逻辑一直没有做深入的理解，这里希望可以通过一篇博客来touch一下git最重要的东西。<br>&emsp;&emsp;这篇博客主要是学习git的命令以及使用方法，中间会穿插一些版本控制的原理方便理解，但不是本博客的主要目的。计算机是一个逻辑性很强的学科，其逻辑性在版本控制如git中体现十分明显，在学习git使用过程中始终把握最基本的逻辑会起到事半功倍的效果。<br>这里有一个写的非常的清晰和详细的文档<a href="https://gitee.com/progit/" target="_blank" rel="noopener">Pro Git(中文版)</a>。</p>
 <h1 id="认识版本控制系统"><a href="#认识版本控制系统" class="headerlink" title="认识版本控制系统"></a>认识版本控制系统</h1><p>版本控制系统分为三类：<br><strong>1、本地版本控制系统：</strong> 如rcs，本地保存并管理补丁(patch)，文件补丁是一种特定的文件格式，记录文件修订前后内容的变化。适合个人本地版本管理，使用场景比较有限。<br><strong>2、集中化的版本控制系统（ Centralized Version Control Systems，简称 CVCS ）：</strong> 如CVS，Subversion 以及 Perforce等，集中式顾名思义有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们通过客户端连接到这台服务器上，取出最新的文件进行修改并提交更新。<strong><font color="green">好处：更容易控制权限，任务分工更明确；</font><font color="red">坏处：单点故障问题；单队列的任务提交形式效率很低。</font></strong><br><strong>3、分布式版本控制系统（ Distributed Version Control System，简称 DVCS ）：</strong> 如Git，Mercurial，Bazaar，Darcs等，不同于集中式版本控制库仅有中央服务器有一份完整的备份，客户端会提取代码仓库的完整备份。</p>
-<h1 id="Git文件四种状态"><a href="#Git文件四种状态" class="headerlink" title="Git文件四种状态"></a>Git文件四种状态</h1><p>这是一个很重要的概念，后续的操作主要就是对文件的状态做修改或者在文件状态的基础上执行操作，是理解Git背后逻辑的关键。四种状态分别是：未被追踪的(untracked)，已修改(modified)，已暂存(staged)，已提交(committed)，四种状态的文件流转对应三个工作区域：Git的工作目录，暂存区域，本地仓库。<br><strong>未被追踪的(untracked)：</strong> 通常是在工作目录下自行添加的文件；<br><strong>已修改(modified)：</strong> 对已经在暂存区或者在git 仓库中的文件作出修改，那么文件会被标记为已修改的文件，已修改的文件通常放在工作目录下，等待放入暂存区。<br><strong>已暂存(staged)：</strong> 将未被追踪/已修改的文件通过git add命令将文件添加到暂存区，暂存区的文件通常放在Git目录下，工作目录下已修改的文件通过git add 命令将文件放在暂存区。<br><strong>已提交(committed)：</strong> 暂存区的文件通过git commit命令永久的存储在Git目录中。</p>
+<h1 id="Git文件四种状态"><a href="#Git文件四种状态" class="headerlink" title="Git文件四种状态"></a>Git文件四种状态</h1><p>&emsp;&emsp;这是一个很重要的概念，后续的操作主要就是对文件的状态做修改或者在文件状态的基础上执行操作，是理解Git背后逻辑的关键。四种状态分别是：未被追踪的(untracked)，已修改(modified)，已暂存(staged)，已提交(committed)，四种状态的文件流转对应三个工作区域：Git的工作目录，暂存区域，本地仓库。<br><strong>未被追踪的(untracked)：</strong> 通常是在工作目录下自行添加的文件；<br><strong>已修改(modified)：</strong> 对已经在暂存区或者在git 仓库中的文件作出修改，那么文件会被标记为已修改的文件，已修改的文件通常放在工作目录下，等待放入暂存区。<br><strong>已暂存(staged)：</strong> 将未被追踪/已修改的文件通过git add命令将文件添加到暂存区，暂存区的文件通常放在Git目录下，工作目录下已修改的文件通过git add 命令将文件放在暂存区。<br><strong>已提交(committed)：</strong> 暂存区的文件通过git commit命令永久的存储在Git目录中。</p>
 <h1 id="Git-命令"><a href="#Git-命令" class="headerlink" title="Git 命令"></a>Git 命令</h1><h2 id="Git的配置命令"><a href="#Git的配置命令" class="headerlink" title="Git的配置命令"></a>Git的配置命令</h2><p>Git仓库的初始化：</p>
 <pre><code>git init
 </code></pre><p>配置Git仓库的用户信息：</p>
@@ -354,8 +354,10 @@ git log --since=时间点  //显示指定时间之后的提交记录
 git log --until=时间点  //显示指定时间之前的提交记录
 git log --author       //仅显示指定作者的提交记录
 git log --committer    //仅显示指定提交者的提交记录
-</code></pre><p>5、git </p>
-<h2 id="Git的撤销操作"><a href="#Git的撤销操作" class="headerlink" title="Git的撤销操作"></a>Git的撤销操作</h2><p>1、修改最后一次的提交：</p>
+</code></pre><p>5、对比未暂存和已暂存的更新</p>
+<pre><code>git diff             //工作目录当前文件和暂存其区域快照之间的区别
+git diff --cached    //已暂存的文件和上次暂存的文件之间的差别
+</code></pre><h2 id="Git的撤销操作"><a href="#Git的撤销操作" class="headerlink" title="Git的撤销操作"></a>Git的撤销操作</h2><p>1、修改最后一次的提交：</p>
 <pre><code>git commit --amend 
 //撤销上一次的提交，并合并暂存区的文件一起再一次提交 
 //如果执行命令之前暂存区没有文件，那就相当于仅仅对提交描述做修改而不修改文件内容
@@ -379,6 +381,7 @@ git rm -f &lt;file&gt;...       // 工作区和暂存区内的文件同时删除
 mv &lt;file1&gt; &lt;file2&gt;
 git rm &lt;file1&gt;
 git add &lt;file2&gt;
+</code></pre><h2 id="git的分支"><a href="#git的分支" class="headerlink" title="git的分支"></a>git的分支</h2><pre><code>git
 </code></pre>
           
         
