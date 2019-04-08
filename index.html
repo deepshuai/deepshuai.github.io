@@ -367,7 +367,7 @@ git log --committer    //仅显示指定提交者的提交记录
 <pre><code>git checkout -- &lt;file&gt;... //撤销对工作区文件的修改
 </code></pre><h2 id="git的删除操作"><a href="#git的删除操作" class="headerlink" title="git的删除操作"></a>git的删除操作</h2><p>1、删除工作区和暂存区内的文件</p>
 <pre><code>git rm &lt;file&gt;... 
-等效：
+==&gt;：
 rm &lt;file&gt;... 
 git add &lt;file&gt;...  
 
@@ -375,7 +375,7 @@ git rm --cache &lt;file&gt;...  // 仅仅删除暂存区内的文件而不删除
 git rm -f &lt;file&gt;...       // 工作区和暂存区内的文件同时删除
 </code></pre><p>2、移动文件</p>
 <pre><code>git mv &lt;file1&gt; &lt;file2&gt;    // 对暂存区内的文件重新命名
-等效：
+==&gt;：
 mv &lt;file1&gt; &lt;file2&gt;
 git rm &lt;file1&gt;
 git add &lt;file2&gt;
