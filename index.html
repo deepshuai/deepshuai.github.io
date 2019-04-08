@@ -238,6 +238,151 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/04/08/git的使用方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Deepshuai">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/avatar/deepshuai.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，任何时候都不会晚。">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/08/git的使用方法/" itemprop="url">git的使用方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-08T13:50:20+08:00">
+                2019-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/版本控制/" itemprop="url" rel="index">
+                    <span itemprop="name">版本控制</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="写在最前面"><a href="#写在最前面" class="headerlink" title="写在最前面"></a>写在最前面</h1><p>&emsp;&emsp;git之前有使用过，但多局限于一些简单的指令，对其更深更全面的背后逻辑一直没有做深入的理解，这里希望可以通过一篇博客来touch一下git最重要的东西。<br>&emsp;&emsp;这篇博客主要是学习git的命令以及使用方法，中间会穿插一些版本控制的原理方便理解，但不是本博客的主要目的。计算机是一个逻辑性很强的学科，其逻辑性在版本控制如git中体现十分明显，在学习git使用过程中始终把握最基本的逻辑会起到事半功倍的效果。<br>这里有一个写的非常的清晰和详细的文档<a href="https://gitee.com/progit/" target="_blank" rel="noopener">Pro Git(中文版)</a>。</p>
+<h1 id="认识版本控制系统"><a href="#认识版本控制系统" class="headerlink" title="认识版本控制系统"></a>认识版本控制系统</h1><p>版本控制系统分为三类：1、本地版本控制系统、2、集中化的版本控制系统（ Centralized Version Control Systems，简称 CVCS ）、3、分布式版本控制系统（ Distributed Version Control System，简称 DVCS ）。<br><strong>1、本地版本控制系统：</strong> 如rcs，本地保存并管理补丁(patch)，文件补丁是一种特定的文件格式，记录文件修订前后内容的变化。适合个人本地版本管理，使用场景比较有限。<br><strong>2、集中化的版本控制系统：</strong> 如CVS，Subversion 以及 Perforce等，集中式顾名思义有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们通过客户端连接到这台服务器上，取出最新的文件进行修改并提交更新。<strong><font color="green">好处：更容易控制权限，任务分工更明确；</font><font color="red">坏处：单点故障问题；单队列的任务提交形式效率很低。</font></strong><br><strong>3、分布式版本控制系统：</strong> 如Git，Mercurial，Bazaar，Darcs等，不同于集中式版本控制库仅有中央服务器有一份完整的备份，客户端会提取代码仓库的完整备份。</p>
+<h1 id="Git文件三种状态"><a href="#Git文件三种状态" class="headerlink" title="Git文件三种状态"></a>Git文件三种状态</h1><p>这是一个很重要的概念，后续的操作主要就是对文件的状态做修改或者在文件状态的基础上执行操作，是理解Git背后逻辑的关键。三种状态分别是：已修改(modified)，已暂存(staged)，已提交(committed)，三种状态的文件流转对应三个工作区域：Git的工作目录，暂存区域，本地仓库。</p>
+<p><strong>已修改(modified)：</strong><br><strong>已暂存(staged)：</strong><br><strong>已提交(committed)：</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1511,7 +1656,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1522,7 +1667,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -1533,7 +1678,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

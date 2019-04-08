@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="AI芯片， 深度学习,">
+  <meta name="keywords" content="编程工具，版本控制库,">
 
 
 
@@ -79,31 +79,18 @@
 
 
 
-<meta name="description" content="Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。 Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元">
-<meta name="keywords" content="AI芯片， 深度学习">
+<meta name="description" content="写在最前面&amp;emsp;&amp;emsp;git之前有使用过，但多局限于一些简单的指令，对其更深更全面的背后逻辑一直没有做深入的理解，这里希望可以通过一篇博客来touch一下git最重要的东西。&amp;emsp;&amp;emsp;这篇博客主要是学习git的命令以及使用方法，中间会穿插一些版本控制的原理方便理解，但不是本博客的主要目的。计算机是一个逻辑性很强的学科，其逻辑性在版本控制如git中体现十分明显，在学习git">
+<meta name="keywords" content="编程工具，版本控制库">
 <meta property="og:type" content="article">
-<meta property="og:title" content="论文-Cambricon-X: An Accelerator for Sparse Neural Networks">
-<meta property="og:url" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/index.html">
+<meta property="og:title" content="git的使用方法">
+<meta property="og:url" content="https://deepshuai.github.io/2019/04/08/git的使用方法/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。 Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元">
+<meta property="og:description" content="写在最前面&amp;emsp;&amp;emsp;git之前有使用过，但多局限于一些简单的指令，对其更深更全面的背后逻辑一直没有做深入的理解，这里希望可以通过一篇博客来touch一下git最重要的东西。&amp;emsp;&amp;emsp;这篇博客主要是学习git的命令以及使用方法，中间会穿插一些版本控制的原理方便理解，但不是本博客的主要目的。计算机是一个逻辑性很强的学科，其逻辑性在版本控制如git中体现十分明显，在学习git">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/加速器架构图.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/BufferController.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PE.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PEFU.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/IM.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/Indexing.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directIndexing.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/stepIndexing.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directStep.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/CONV.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/FC.png">
-<meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/energyReduction.png">
-<meta property="og:updated_time" content="2019-04-07T16:14:53.786Z">
+<meta property="og:updated_time" content="2019-04-08T07:05:58.054Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="论文-Cambricon-X: An Accelerator for Sparse Neural Networks">
-<meta name="twitter:description" content="Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。 Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元">
-<meta name="twitter:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/加速器架构图.png">
+<meta name="twitter:title" content="git的使用方法">
+<meta name="twitter:description" content="写在最前面&amp;emsp;&amp;emsp;git之前有使用过，但多局限于一些简单的指令，对其更深更全面的背后逻辑一直没有做深入的理解，这里希望可以通过一篇博客来touch一下git最重要的东西。&amp;emsp;&amp;emsp;这篇博客主要是学习git的命令以及使用方法，中间会穿插一些版本控制的原理方便理解，但不是本博客的主要目的。计算机是一个逻辑性很强的学科，其逻辑性在版本控制如git中体现十分明显，在学习git">
 
 
 
@@ -133,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/">
+  <link rel="canonical" href="https://deepshuai.github.io/2019/04/08/git的使用方法/">
 
 
 
 
 
-  <title>论文-Cambricon-X: An Accelerator for Sparse Neural Networks | 努力，任何时候都不会晚。</title>
+  <title>git的使用方法 | 努力，任何时候都不会晚。</title>
   
 
 
@@ -255,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/">
+    <link itemprop="mainEntityOfPage" href="https://deepshuai.github.io/2019/04/08/git的使用方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Deepshuai">
@@ -272,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">论文-Cambricon-X: An Accelerator for Sparse Neural Networks</h1>
+          <h1 class="post-title" itemprop="name headline">git的使用方法</h1>
         
 
         <div class="post-meta">
@@ -284,8 +271,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-06T16:06:55+08:00">
-                2019-04-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-08T13:50:20+08:00">
+                2019-04-08
               </time>
             
 
@@ -307,8 +294,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/硬件设计/" itemprop="url" rel="index">
-                    <span itemprop="name">硬件设计</span>
+                  <a href="/categories/版本控制/" itemprop="url" rel="index">
+                    <span itemprop="name">版本控制</span>
                   </a>
                 </span>
 
@@ -344,23 +331,10 @@
       
 
       
-        <p>Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。</p>
-<p>Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元，需要找到另一个feature map里相同位置的输出神经元代替，这会导致用于管理输出神经元的地址对齐逻辑变得比较复杂，在Cambricon-X的硬件层面并没有做这个支持，于是相应的支持不得不上推到软件层面，这就引入了额外的开销，减少了性能加速的收益。</p>
-<h2 id="整体架构图"><a href="#整体架构图" class="headerlink" title="整体架构图"></a>整体架构图</h2><p>下图是加速器的主架构图，回忆之前的DianNao论文，整体的硬件架构基本相同，只是在数据缓存NBin/NBout和计算单元之间加入了Buffer Controller逻辑，专门用于完成稀疏访存操作。<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/加速器架构图.png" width="500" align="center"></p>
-<p>下图是Buffer Controller的内部设计结构图：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/BufferController.png" width="500" align="center"><br>其中Indexing模块要做的就是根据权重的稀疏程度对输入神经元进行稀疏访存选取，并将访存结果送入计算引擎单元(PE)里的工作了。</p>
-<p>PE的内部结构图如下：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PE.png" width="400" align="center"><br>其中SB(Synapse Buffer)用于供给计算过程中所需的权重信息（虽然因为加速器片上内存有限，无法在SB里存放所有权重，但是权重仍然比神经元有更强的重复访问特性，所以会在SB里进行记录，想象一下卷积层的weight sharing机制或是RNN的weight在多个time step之间sharing的特性），PEFU则是计算逻辑的硬件实现了，本质上PEFU就是一组乘加器的连接。</p>
-<p>而具体的PEFU内部的逻辑如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PEFU.png" width="400" align="center"></p>
-<p>以上部分我们从外而内、由整体到部分的对整个的硬件架构作出了分析。</p>
-<h2 id="稀疏话的处理逻辑-Buffer-Controller"><a href="#稀疏话的处理逻辑-Buffer-Controller" class="headerlink" title="稀疏话的处理逻辑 Buffer Controller"></a>稀疏话的处理逻辑 Buffer Controller</h2><h3 id="硬件结构"><a href="#硬件结构" class="headerlink" title="硬件结构"></a>硬件结构</h3><p>如下图所示，Buffer Controller最主要的两个结构分别是IM和BCFU，<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/IM.png" width="700" align="center"></p>
-<p><strong>BCFU：</strong> 主要用来存储由IM模块选择的神经元。<br><strong>IM：</strong> 加速器的主要部件，只要是通过Indexing来选择需要保存的参数（非0的参数），简化的操作如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/Indexing.png" width="500" align="center"></p>
-<h3 id="稀疏存储方式"><a href="#稀疏存储方式" class="headerlink" title="稀疏存储方式"></a>稀疏存储方式</h3><p>常见的稀疏数据访问处理策略有Compressed Sparse Row(CSR)、Coordinate list(COO)、Compressed Sparse Column(CSC)、direct indexing以及step indexing。</p>
-<p>其中direct indexing的过程如图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directIndexing.png" width="500" align="center"></p>
-<p>step indexing的过程如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/stepIndexing.png" width="500" align="center"></p>
-<p>而使用CSR/CSC需要两个数组来存储Index，这在一定程度上消耗很多的存储，而对于dirct indexing和step indexing，通过不同长度的array实验，其结果如下：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directStep.png" width="500" align="center"><br>step indexing无论是所需的存储面积还是能耗都有着一定的有势，所以最终的设计采用step indexing的形式。</p>
-<h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2><p>最后论文在LeNet、AlexNet以及VGG16等共六个网络上做了实验。对比的baseline分别选取了CPU(Xeon E5-2620 V2)、GPU（K20M）以及Diannao。并且分别在这几个网络的dense和sparse模型上做了评测，以验证Cambricon-X的通用性。 所有对额实验数据均是把Combricon-X的数据性能normalize为1，而与其他数据的比值取对数值，也就是数量级的对比。评测结果如下：</p>
-<p>下图是卷积层在各个硬件平台下的加速比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/CONV.png" width="500" align="center"></p>
-<p>下图是全连接层/分类层在各个硬件平台下的加速比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/FC.png" width="500" align="center"><br>从实验结果里能够看到，性能的提升还是相当amazing的。在Dense网络上，相较于CPU平均性能加速50X以上，相较于GPU平均性能加速5X以上。在Sparse网络上，相较于CPU平均性能加速140X以上，相较于GPU加速10X以上。</p>
-<p>下图是各个硬件平台下的功耗比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/energyReduction.png" width="500" align="center"></p>
+        <h1 id="写在最前面"><a href="#写在最前面" class="headerlink" title="写在最前面"></a>写在最前面</h1><p>&emsp;&emsp;git之前有使用过，但多局限于一些简单的指令，对其更深更全面的背后逻辑一直没有做深入的理解，这里希望可以通过一篇博客来touch一下git最重要的东西。<br>&emsp;&emsp;这篇博客主要是学习git的命令以及使用方法，中间会穿插一些版本控制的原理方便理解，但不是本博客的主要目的。计算机是一个逻辑性很强的学科，其逻辑性在版本控制如git中体现十分明显，在学习git使用过程中始终把握最基本的逻辑会起到事半功倍的效果。<br>这里有一个写的非常的清晰和详细的文档<a href="https://gitee.com/progit/" target="_blank" rel="noopener">Pro Git(中文版)</a>。</p>
+<h1 id="认识版本控制系统"><a href="#认识版本控制系统" class="headerlink" title="认识版本控制系统"></a>认识版本控制系统</h1><p>版本控制系统分为三类：1、本地版本控制系统、2、集中化的版本控制系统（ Centralized Version Control Systems，简称 CVCS ）、3、分布式版本控制系统（ Distributed Version Control System，简称 DVCS ）。<br><strong>1、本地版本控制系统：</strong> 如rcs，本地保存并管理补丁(patch)，文件补丁是一种特定的文件格式，记录文件修订前后内容的变化。适合个人本地版本管理，使用场景比较有限。<br><strong>2、集中化的版本控制系统：</strong> 如CVS，Subversion 以及 Perforce等，集中式顾名思义有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们通过客户端连接到这台服务器上，取出最新的文件进行修改并提交更新。<strong><font color="green">好处：更容易控制权限，任务分工更明确；</font><font color="red">坏处：单点故障问题；单队列的任务提交形式效率很低。</font></strong><br><strong>3、分布式版本控制系统：</strong> 如Git，Mercurial，Bazaar，Darcs等，不同于集中式版本控制库仅有中央服务器有一份完整的备份，客户端会提取代码仓库的完整备份。</p>
+<h1 id="Git文件三种状态"><a href="#Git文件三种状态" class="headerlink" title="Git文件三种状态"></a>Git文件三种状态</h1><p>这是一个很重要的概念，后续的操作主要就是对文件的状态做修改或者在文件状态的基础上执行操作，是理解Git背后逻辑的关键。三种状态分别是：已修改(modified)，已暂存(staged)，已提交(committed)，三种状态的文件流转对应三个工作区域：Git的工作目录，暂存区域，本地仓库。</p>
+<p><strong>已修改(modified)：</strong><br><strong>已暂存(staged)：</strong><br><strong>已提交(committed)：</strong></p>
 
       
     </div>
@@ -378,7 +352,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/AI芯片，-深度学习/" rel="tag"># AI芯片， 深度学习</a>
+            <a href="/tags/编程工具，版本控制库/" rel="tag"># 编程工具，版本控制库</a>
           
         </div>
       
@@ -391,8 +365,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/" rel="next" title="论文-Cambricon: An Instruction Set Architecture for Neural Networks">
-                <i class="fa fa-chevron-left"></i> 论文-Cambricon: An Instruction Set Architecture for Neural Networks
+              <a href="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/" rel="next" title="论文-Cambricon-X: An Accelerator for Sparse Neural Networks">
+                <i class="fa fa-chevron-left"></i> 论文-Cambricon-X: An Accelerator for Sparse Neural Networks
               </a>
             
           </div>
@@ -400,10 +374,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/08/git的使用方法/" rel="prev" title="git的使用方法">
-                git的使用方法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -563,7 +533,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体架构图"><span class="nav-number">1.</span> <span class="nav-text">整体架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#稀疏话的处理逻辑-Buffer-Controller"><span class="nav-number">2.</span> <span class="nav-text">稀疏话的处理逻辑 Buffer Controller</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#硬件结构"><span class="nav-number">2.1.</span> <span class="nav-text">硬件结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#稀疏存储方式"><span class="nav-number">2.2.</span> <span class="nav-text">稀疏存储方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验评估"><span class="nav-number">3.</span> <span class="nav-text">实验评估</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#写在最前面"><span class="nav-number">1.</span> <span class="nav-text">写在最前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#认识版本控制系统"><span class="nav-number">2.</span> <span class="nav-text">认识版本控制系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git文件三种状态"><span class="nav-number">3.</span> <span class="nav-text">Git文件三种状态</span></a></li></ol></div>
             
 
           </div>
