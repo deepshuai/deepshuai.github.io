@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器整体架构设计PuDianNao的整体硬件架构如下：P">
+<meta name="description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。">
 <meta name="keywords" content="AI芯片， 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文-PuDianNao: A Polyvalent Machine Learning Accelerator">
 <meta property="og:url" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器整体架构设计PuDianNao的整体硬件架构如下：P">
+<meta property="og:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/MLU.png">
@@ -98,10 +98,10 @@
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/GPUPuDianNao.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/layout.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/infor.png">
-<meta property="og:updated_time" content="2019-04-07T13:26:18.384Z">
+<meta property="og:updated_time" content="2019-04-09T07:30:36.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-PuDianNao: A Polyvalent Machine Learning Accelerator">
-<meta name="twitter:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。 典型机器学习算法分析论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。  加速器整体架构设计PuDianNao的整体硬件架构如下：P">
+<meta name="twitter:description" content="PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。">
 <meta name="twitter:image" content="https://deepshuai.github.io/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png">
 
 
@@ -343,7 +343,7 @@
       
 
       
-        <p>PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。</p>
+        <p>PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。<br><a id="more"></a></p>
 <h2 id="典型机器学习算法分析"><a href="#典型机器学习算法分析" class="headerlink" title="典型机器学习算法分析"></a>典型机器学习算法分析</h2><font color="red">论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。</font>
 
 <h2 id="加速器整体架构设计"><a href="#加速器整体架构设计" class="headerlink" title="加速器整体架构设计"></a>加速器整体架构设计</h2><p>PuDianNao的整体硬件架构如下：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png" width="500" align="center"><br>PuDianNao主要是由若干个功能单元(FUs)，每个FU均由一个MLU和一个ALU组成、三个数据缓存(Hot Buffer、Cold Buffer、Output Buffer)、一个指令缓存(Instruction Buffer)、一个控制模块以及DMA控制器等组成。</p>

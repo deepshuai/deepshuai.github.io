@@ -476,26 +476,15 @@
 
       
         
-          
-            <p>Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。</p>
-<p>Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元，需要找到另一个feature map里相同位置的输出神经元代替，这会导致用于管理输出神经元的地址对齐逻辑变得比较复杂，在Cambricon-X的硬件层面并没有做这个支持，于是相应的支持不得不上推到软件层面，这就引入了额外的开销，减少了性能加速的收益。</p>
-<h2 id="整体架构图"><a href="#整体架构图" class="headerlink" title="整体架构图"></a>整体架构图</h2><p>下图是加速器的主架构图，回忆之前的DianNao论文，整体的硬件架构基本相同，只是在数据缓存NBin/NBout和计算单元之间加入了Buffer Controller逻辑，专门用于完成稀疏访存操作。<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/加速器架构图.png" width="500" align="center"></p>
-<p>下图是Buffer Controller的内部设计结构图：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/BufferController.png" width="500" align="center"><br>其中Indexing模块要做的就是根据权重的稀疏程度对输入神经元进行稀疏访存选取，并将访存结果送入计算引擎单元(PE)里的工作了。</p>
-<p>PE的内部结构图如下：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PE.png" width="400" align="center"><br>其中SB(Synapse Buffer)用于供给计算过程中所需的权重信息（虽然因为加速器片上内存有限，无法在SB里存放所有权重，但是权重仍然比神经元有更强的重复访问特性，所以会在SB里进行记录，想象一下卷积层的weight sharing机制或是RNN的weight在多个time step之间sharing的特性），PEFU则是计算逻辑的硬件实现了，本质上PEFU就是一组乘加器的连接。</p>
-<p>而具体的PEFU内部的逻辑如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PEFU.png" width="400" align="center"></p>
-<p>以上部分我们从外而内、由整体到部分的对整个的硬件架构作出了分析。</p>
-<h2 id="稀疏话的处理逻辑-Buffer-Controller"><a href="#稀疏话的处理逻辑-Buffer-Controller" class="headerlink" title="稀疏话的处理逻辑 Buffer Controller"></a>稀疏话的处理逻辑 Buffer Controller</h2><h3 id="硬件结构"><a href="#硬件结构" class="headerlink" title="硬件结构"></a>硬件结构</h3><p>如下图所示，Buffer Controller最主要的两个结构分别是IM和BCFU，<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/IM.png" width="700" align="center"></p>
-<p><strong>BCFU：</strong> 主要用来存储由IM模块选择的神经元。<br><strong>IM：</strong> 加速器的主要部件，只要是通过Indexing来选择需要保存的参数（非0的参数），简化的操作如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/Indexing.png" width="500" align="center"></p>
-<h3 id="稀疏存储方式"><a href="#稀疏存储方式" class="headerlink" title="稀疏存储方式"></a>稀疏存储方式</h3><p>常见的稀疏数据访问处理策略有Compressed Sparse Row(CSR)、Coordinate list(COO)、Compressed Sparse Column(CSC)、direct indexing以及step indexing。</p>
-<p>其中direct indexing的过程如图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directIndexing.png" width="500" align="center"></p>
-<p>step indexing的过程如下图所示：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/stepIndexing.png" width="500" align="center"></p>
-<p>而使用CSR/CSC需要两个数组来存储Index，这在一定程度上消耗很多的存储，而对于dirct indexing和step indexing，通过不同长度的array实验，其结果如下：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/directStep.png" width="500" align="center"><br>step indexing无论是所需的存储面积还是能耗都有着一定的有势，所以最终的设计采用step indexing的形式。</p>
-<h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2><p>最后论文在LeNet、AlexNet以及VGG16等共六个网络上做了实验。对比的baseline分别选取了CPU(Xeon E5-2620 V2)、GPU（K20M）以及Diannao。并且分别在这几个网络的dense和sparse模型上做了评测，以验证Cambricon-X的通用性。 所有对额实验数据均是把Combricon-X的数据性能normalize为1，而与其他数据的比值取对数值，也就是数量级的对比。评测结果如下：</p>
-<p>下图是卷积层在各个硬件平台下的加速比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/CONV.png" width="500" align="center"></p>
-<p>下图是全连接层/分类层在各个硬件平台下的加速比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/FC.png" width="500" align="center"><br>从实验结果里能够看到，性能的提升还是相当amazing的。在Dense网络上，相较于CPU平均性能加速50X以上，相较于GPU平均性能加速5X以上。在Sparse网络上，相较于CPU平均性能加速140X以上，相较于GPU加速10X以上。</p>
-<p>下图是各个硬件平台下的功耗比：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/energyReduction.png" width="500" align="center"></p>
-
-          
+          <p>Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。</p>
+<p>Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元，需要找到另一个feature map里相同位置的输出神经元代替，这会导致用于管理输出神经元的地址对齐逻辑变得比较复杂，在Cambricon-X的硬件层面并没有做这个支持，于是相应的支持不得不上推到软件层面，这就引入了额外的开销，减少了性能加速的收益。<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -634,29 +623,14 @@
 
       
         
-          
-            <p>Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用到具体的场景之中的重要工作。<br>之后研究团队注册了公司，名字就是Cambricon，专注端+云的智能处理器生态的培养，而最核心的东西就是指令集，接下来具体了解一下在Cambricon指令集之上的处理器的设计细节。</p>
-<h2 id="ISA介绍"><a href="#ISA介绍" class="headerlink" title="ISA介绍"></a>ISA介绍</h2><h3 id="整体介绍"><a href="#整体介绍" class="headerlink" title="整体介绍"></a>整体介绍</h3><p>Combricon为64-bit的定长指令集架构，指令集整体分为四个大类，分别是控制类指令/数据存取类指令/算术计算类指令/逻辑运算类指令。大致的分类如下表所示：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ISAOverview.png" width="700" align="center"></p>
-<p><strong>控制指令：</strong> 分为两种，jump和conditional branch。<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/ControlISA.png" width="400" align="center"></p>
-<p><strong>数据存取指令：</strong> 支持标量、向量和矩阵三种数据形式，三种数据形式分别支持load/store/move三种操作。其中load是将一定规模的数据从main memory加载到on-chip scratchpad memory，store的数据流动方向刚好相反，而move指令是数据在calar GPRs和on-chip scratchpad memory之间的存取。下图是vector load指令：</p>
-<p><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/VLoad.png" width="400" align="center"><br><strong>算术计算指令/逻辑计算指令</strong> 作为设计的重点后面章节具体介绍。</p>
-<h2 id="计算-逻辑指令"><a href="#计算-逻辑指令" class="headerlink" title="计算/逻辑指令"></a>计算/逻辑指令</h2><h3 id="计算类指令"><a href="#计算类指令" class="headerlink" title="计算类指令"></a>计算类指令</h3><p>计算类指令主要是针对神经网络的常用计算逻辑提供了指令集的支持。比如矩阵与矩阵的相乘，矩阵与向量的相系，向量与向量的相乘，等等。这类指令的一个特点是，指令所操作数据的长度是不定长的，以灵活支持不同尺寸的矩阵和向量。</p>
-<p><strong>矩阵运算指令：</strong> 机器学习算法尤其是神经网络中如卷积运算是最常见的矩阵和矩阵的点乘运算，全连接层则是典型的矩阵和向量的计算。<br><strong>向量运算指令：</strong> 在完成如卷积计算这类的矩阵运算之后，需要对数据进行非线性的处理，这时需要向量层次的计算。如sigmoid激活函数，由于指数函数的存在，为了降低计算的复杂度，简化硬件设计的逻辑，采用Taylor展开式这种线性插值的方法。<br><strong>标量运算指令：</strong> 在GoogLeNet中仅仅有0.008%的计算操作通过矩阵/向量指令无法支持，即使如此Combicon也支持标量的操作。</p>
-<h3 id="逻辑操作指令"><a href="#逻辑操作指令" class="headerlink" title="逻辑操作指令"></a>逻辑操作指令</h3><p>逻辑类指令主要是针对向量或矩阵数据，完成逻辑判断操作。比如用于支持max-pooling的条件merge指令就可以对多组feature map，通过条件赋值，完成max-pooling的操作。比如下图是矩阵最大池化的指令操作：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/LogicISA.png" width="400" align="center"></p>
-<h3 id="code示例"><a href="#code示例" class="headerlink" title="code示例"></a>code示例</h3><p>下面一段指令代码是多层感知机的操作过程：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/MLP.png" width="400" align="center"><br>最大池化的代码：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/MaxPool.png" width="400" align="center"></p>
-<h2 id="加速器设计"><a href="#加速器设计" class="headerlink" title="加速器设计"></a>加速器设计</h2><p>下图是Combricon加速器设计的原型：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/acc.png" width="400" align="center"><br>该原型类似于标准的MIPS指令集的流水线结构实现，由取指、译码、发射、寄存器访问、执行、写回结果、提交七级流水组成，没有支持乱序执行。为了优化数据存取的信息，在Scratchpad Memory和矩阵/向量计算部件之间通过DMA来加速数据传输的效率。在结构图里，引入了一个L1 Cache，主要是为标量数据的存取提供Cache支持，可以理解为标量数据的data locality会比matrix/vector数据要强，所以对这种场景提供cache支持有助于系统整体性能的保证，而考虑到标量数据上的操作在神经网络中的整体操作里占比不高(GoogLeNet&lt;0.008%)，所以cache的控制逻辑也可以适当简化，这是一个设计的trade-off。</p>
-<h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2><p>在十种机器学习算法上进行实验，Benchmark如下表：</p>
-<h3 id="Benchmarks"><a href="#Benchmarks" class="headerlink" title="Benchmarks"></a>Benchmarks</h3><p><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/Benchmarks.png" width="400" align="center"></p>
-<p>每种算法中各种指令的比例：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/percentageISA.png" width="500" align="center"></p>
-<h3 id="硬件平台"><a href="#硬件平台" class="headerlink" title="硬件平台"></a>硬件平台</h3><p><strong>CPU：</strong> The CPU baseline is an x86-CPU with 256-bit SIMD support (Intel Xeon E5-2620, 2.10GHz, 64 GB memory)。<br><strong>GPU：</strong> The GPU baseline is a modern GPU card (NVIDI- A K40M, 12GB GDDR5, 4.29 TFlops peak at a 28nm process)。<br><strong>NN Accelerator：</strong> DaDianNao，65nm process， single central tile and a total of 32 leaf tiles. The central tile has 64KB SRAM, 32 16-bit adders and 32 16-bit multipliers; Each leaf tile has 24KB SRAM, 32 16-bit adders and 32 16-bit multipliers.</p>
-<p><strong>本文的Combricon</strong></p>
-<p>下图是代码长度的比较：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/codeLen.png" width="500" align="center"></p>
-<p>下图是加速比：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/SpeedUp.png" width="500" align="center"></p>
-<p>下图是功耗比：<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/eneReduction.png" width="400" align="center"></p>
-<p>从整个实验的结果来看，由于采用的64-bit定长精简指令集，代码长度相对于CPU和GPU以及之前的NN加速器都有数量级的提升，Combricon相对于CPU和GPU都有显著的性能的提升，整个加速效果和DaDianNao相当，由于大电脑支持的机器学习算法并不全面，部分数据无法反映。功耗是Combicon和DaDianNao的一大优势，相对于GPU而言，有两个数量级的提升。</p>
-<h3 id="芯片面积以及功耗占比"><a href="#芯片面积以及功耗占比" class="headerlink" title="芯片面积以及功耗占比"></a>芯片面积以及功耗占比</h3><p>下图是基于Cambricon指令集的芯片layout，也就是每个功能模块在最终芯片上占据了多少比例的实地面积以及对应功耗，从下面这张图来看，无论是从芯片面积占比上还是从功耗占比来看，矩阵部分都是大头，这也比较符合我们对芯片上运行的workload的直觉理解。<br><img src="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/Layout.png" width="400" align="center"></p>
-
-          
+          <p>Cambricon又名DianNaoYu，这篇论文研究和发表的时候，与法国Temam教授的合作已经结束。如果说DianNao开创了人工智能加速器设计的研究，后续的DaDianNao、ShiDianNao、PuDianNao分别各有侧重，在不同的应用场景下对深度神经网络进行加速器的设计，那么Cambricon追求的是在更为泛化的层面上对深度神经网络加速器进行设计，是深度学习加速器真正的能大规模的应用到具体的场景之中的重要工作。<br>之后研究团队注册了公司，名字就是Cambricon，专注端+云的智能处理器生态的培养，而最核心的东西就是指令集，接下来具体了解一下在Cambricon指令集之上的处理器的设计细节。<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/05/论文-Cambricon-An-Instruction-Set-Architecture-for-Neural-Networks/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -795,29 +769,14 @@
 
       
         
-          
-            <p>PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。</p>
-<h2 id="典型机器学习算法分析"><a href="#典型机器学习算法分析" class="headerlink" title="典型机器学习算法分析"></a>典型机器学习算法分析</h2><font color="red">论文中的体系结构支持k-近邻算法、k-means算法、深度神经网络算法、线性回归算法、支持向量机算法、朴素贝叶斯算法、分类树算法共7种机器学习算法。</font>
-
-<h2 id="加速器整体架构设计"><a href="#加速器整体架构设计" class="headerlink" title="加速器整体架构设计"></a>加速器整体架构设计</h2><p>PuDianNao的整体硬件架构如下：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/pudiannao.png" width="500" align="center"><br>PuDianNao主要是由若干个功能单元(FUs)，每个FU均由一个MLU和一个ALU组成、三个数据缓存(Hot Buffer、Cold Buffer、Output Buffer)、一个指令缓存(Instruction Buffer)、一个控制模块以及DMA控制器等组成。</p>
-<h3 id="功能单元-Function-Unit"><a href="#功能单元-Function-Unit" class="headerlink" title="功能单元 Function Unit"></a>功能单元 Function Unit</h3><p>Function Unit是PuDianDao的执行单元，每个FU均由一个MLU和一个ALU组成，MLU是用于机器学习算法的硬件定制，而ALU用于常规的计算控制任务。由此可见MLU的设计是机器学习算法加速的核心。针对机器学习的算法加速，MLU采用Counter、Adder、Multiplier、Adder tree、acc和Misc六级流水线，具体的流水线结构如下图所示：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/MLU.png" width="500" align="center"><br>关于流水线的设计，并不是所有的算法都会全部用到流水线的每一级，但流水线将算法所设计的主要运算包含在内。尤其是Multiplier 和 Adder Tree的流水线的组合对dot product提供了支持，这种向量/矩阵dot product是LR/SVM/DNN算法中的高频操作；对于数据的宽度大于硬件逻辑宽度的时候，通过ACC对partial sum进行缓存；而Misc流水段通过了非线性激活函数(sigmod/tanh/ReLU)的线性插值近似操作和top-k/tail-k的功能。</p>
-<p>相对于MLU流水线的设计，ALU的设计相对简单，主要实现MLU中未支持的逻辑运算操作，主要是机器学习算法中的非高频操作。这里的设计思路可能是说：<strong>作为机器学习加速器，通常的做法是将机器学习的高频计算放在加速器上完成，而非高频的逻辑操作和控制逻辑放在宿主CPU上完成，这里添加ALU主要是为了让加速器尽可能独立的处理机器学习算法，减少宿主CPU和加速器MLU之间的协同交互开销。</strong></p>
-<h3 id="数据位宽"><a href="#数据位宽" class="headerlink" title="数据位宽"></a>数据位宽</h3><p>为了减少芯片的面积、降低功耗、增加数据吞吐量、提高计算速度、减少通信带宽，PuDianNao采用mixed precision，在流水线的Adder/Multiplier/Adder tree这三个stage支持16位的浮点运算，而对Counter/Acc/Misc这三个stage仍然使用32位的浮点数。主要的考虑因素是Counter/Acc/Misc分别靠输入数据和最终的结果数据很近，容易出现溢出现象，而Adder/Multiplier/Adder tree最为中间结果，溢出的风险较小，这也是一种设计在精度和加速性能之间的权衡。<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/precision.png" width="400" align="center"><br>由上表可以看出，采用fp16和fp32的混合精度计算的算法精度和全精度相比没有特别大的精度损失。<strong><font color="red">这里推荐一篇NVIDIA的混合精度训练神经网络以及指导硬件设计的论文：<a href="https://arxiv.org/abs/1710.03740" target="_blank" rel="noopener">Mixed Precision Training</a>，该方法训练过程中通过一些额外的trick可以进一步避免因fp16低精度带来的算法性能损失，这里不展开介绍。</font></strong></p>
-<h3 id="缓存设计"><a href="#缓存设计" class="headerlink" title="缓存设计"></a>缓存设计</h3><p>PuDianNao中包含是三个数据缓存(HotBuf、ColdBuf、OutputBuf)和一个指令缓存(InstBuf)。除了将指令缓存和数据缓存分开，同时将数据缓存进行进一步的划分，主要考虑的是一方面机器学习算法多是SIMD的计算形式，对数据的带宽要求远远大于指令缓存的带宽；另一方面，数据带宽进行更加细粒度的划分，是因为计算任务中数据复用程度不同，需要的带宽不相同。同时，为了进一步的降低功耗和芯片的面积，HotBuf和ColdBuf由于只进行读操作，因此采用但端口的SRAM（只读），而OutputBuf要支持读写操作，采用双端口的SRAM（可读写）。</p>
-<h2 id="控制和代码生成"><a href="#控制和代码生成" class="headerlink" title="控制和代码生成"></a>控制和代码生成</h2><p>PuDiannao的Control Module起到指令译码和任务分发的功能。PuDianNao通过Control Module来对计算任务进行描述，将指令进行译码并将需要执行的操作发送给FU。<strong><font color="red">这里需要注意的是，到PuDianNao论文的时候，寒武纪团队还没有针对加速器设计提出一整套的指令集的设计，所以要对每种算发的计算过程进行指令抽象，指令级别的编程要对硬件的架构非常的了解，这也是后面<a href="https://dl.acm.org/citation.cfm?id=3001179" target="_blank" rel="noopener">Cambricon的指令集</a>论文出现让整个硬件设计大规模的工业应用成为可能。</font></strong></p>
-<p>下表是PuDianNao中涉及到的指令：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/InstName.png" width="500" align="center"><br>而基于以上指令的K-Means算法的实现如下表所示：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/InstKmeans.png" width="500" align="center"></p>
-<h2 id="实验及结果分析"><a href="#实验及结果分析" class="headerlink" title="实验及结果分析"></a>实验及结果分析</h2><p>实验主要的评估集中在加速比和功耗两个方面，同时最终给出了各个模块的芯片面积和占比。实验分别基于C和verilog仿真器实验环境，Verilog(65nm工艺)精度更高，速度慢，C仿真速度快但会有精度的损失。</p>
-<p>下图是实验的benchmarks和Dataset：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/BenchmarkDataset.png" width="500" align="center"><br>评估的baseline是GPU(NVIDIA K20M, 3.2TFlops peak，5GB显存，208GB/s显存带宽，28nm工艺， CUDA SDK5.5）。实验将每种算法的training和predicition分开对比：</p>
-<h3 id="性能比较"><a href="#性能比较" class="headerlink" title="性能比较"></a>性能比较</h3><p>在比较之前，先进行GPU和CPU的加速比比较：其中CPU with 256-bit SIMD (Intel Xeon E5-4620 Sandy Bridge-EP, 2.2GHz, 1TB memory, gcc compilation flag “-O3 -ftree-vectorize -march=native”)<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/GPUCPU.png" width="500" align="center"><br>通过上图可以看出GPU相对与CPU有数量级级别的加速。</p>
-<p>PuDianNao相对于GPU的加速比：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/PuDianNaoGPU.png" width="500" align="center"><br>PuDianNao在多数算法上相对于GPU有更为突出的性能，但在部分算法phase中表现并没有比GPU好，其主要原因应该是这些算法中存在着大量的矩阵乘的运算，GPU中存在大量的寄存器，这样就可以临时的存储partical number，而PuDianNao并没有配置大规模的寄存器堆，没有办法对中间结果的保存，这样就需要FU和dataBuffer之间进行频繁的通信和交互，这样就限制了性能的提升。</p>
-<h3 id="功耗比较"><a href="#功耗比较" class="headerlink" title="功耗比较"></a>功耗比较</h3><p>GPU/PuDianNao相对于CPU都有显著的性能提升，但PuDianNao由于硬件资源的限制，相对于GPU的性能提升非常的有限，但是就硬件的功耗而言，相对于GPU由非常明显的优势：<br><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/GPUPuDianNao.png" width="500" align="center"><br>由上图可以看出，PuDianNao相对于GPU的功耗由两个数量级的提升。</p>
-<h3 id="芯片面积"><a href="#芯片面积" class="headerlink" title="芯片面积"></a>芯片面积</h3><p>下图是PuDianNao芯片的整体layout信息：</p>
-<p><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/layout.png" width="400" align="center"></p>
-<p>而具体的每个模块面积和占别以及各个模块的功耗情况如下图所示：</p>
-<p><img src="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/infor.png" width="500" align="center"></p>
-<p>FU(Functional Unit)和CB（Cold Buffer）占了较大的面积，CM（Control Module）的面积不大，但是功耗并不小。</p>
-
-          
+          <p>PuDianNao于之前DianNao系列的论文主要专注于神经网络不同，论文想通过总结目前主流的机器学习算法的计算操作特点以及访存模式，设计出更加范性的机器学习加速器。<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/29/论文-PuDianNao-A-Polyvalent-Machine-Learning-Accelerator/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -956,24 +915,15 @@
 
       
         
-          
-            <p>&emsp;&emsp;ShiDianNao这篇论文更像是针对具体应用场景的体系结构&amp;优化的工作，但是对加速的的设计细节介绍的最为详细，无论是访存体系还是计算单元的设计都介绍的非常的细致。<strong>文章的主要思想：利用卷集神经网络(CNNs)权值共享的特性，将CNNs模型参数整体加载到SRAM构成的高速存储里，减少DRAM访问带来的开销;同时将加速器与视频图像传感器相连，减少额外的访存操作(传统模式：先将传感器采集的数据放入DRAM，然后通知加速器进行处理，在处理的过程中还要再一次的访问DRAM获取传感器数据)。</strong></p>
-<p><strong><font color="red">按照上面的思路，硬件的设计不可避免的会碰到以下问题：</font></strong><br><strong>1、SRAM被分配多大的容量？</strong> 既然要将CNNs模型参数整体加载到SRAM上，那么就会面对SRAM容量的取舍，容量大了功耗增加，芯片面积增加；容量过小，模型不能完全hold住，对计算性能带来影响。<br><strong>2、计算单元和CNNs如何映射？</strong> 最简单的方式就是每个神经元映射一个硬件的计算单元，但是CNNs模型的规模各不相同并且差别很大，在一定程度上限制了灵活性；另一种思路和之前的论文一致，采用基于时分复用的方式，执行计算和加载数据流水线的方式进行，而计算过程中是一次计算一个特定的feature map的output还是一次计算多个仍然是需要衡量的问题。<br><strong>3、Data locality是否眼进行深度的挖掘和优化？</strong> 数据局部性的优化处理也可能在一定程度上提高性能，如CNNs卷积层的计算过程中一组input neuron可能会被多个output neuron使用，所以在计算单元中引入一些本地存储可能会节省访存的开销，但同时会增加硬件设计的复杂度。<br>ShiDianNao论文最大的贡献就是对以上问题都进行了分析和处理，给出了非常精巧的设计方案。</p>
-<h2 id="整体硬件架构"><a href="#整体硬件架构" class="headerlink" title="整体硬件架构"></a>整体硬件架构</h2><p>首先看一下ShiDianNao的整体硬件结构：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/shidiannao架构.png" width="400" align="center"></p>
-<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><p>左侧NBin/NBout/SB是SRAM快用于数据的存储，而具体每一部分的存储空间如下表所示：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/存储容量.jpg" width="250" align="center"></p>
-<font color="red">这里最要解决的是问题1，也就是SRAM分配容量的问题，SB的size为128K，对于一般的CNNs网络是远远不够的，可能结合模型压缩算法可以解决该容量的问题。</font>
-
-<p>DianNao系列的论文均采用类似的NBin/NBout/SB分离的方式，根据CNNs计算任务的特点，NBin存储input neuron，NBout存储output Neuron，SB存储模型参数。这三类存储，要求SB能够hold住模型全部的参数，NBin/NBout能够hold住完整的inpout/output neuron。因为模型的参数会被反复的使用，存在SRAM中可以减少从DRAM中加载数据时的时间开销，而输入数据中的raw data(input image)处理一次之后不再使用，所以只需要每个网络层在计算的时候input/output neuron在SRAM中即可。</p>
-<h3 id="NFU"><a href="#NFU" class="headerlink" title="NFU"></a>NFU</h3><p>芯片的右侧是NFU(Neural Functional Unit)，是由若干个PE组成的$x*y$大小的计算阵列，每个PE中有一个乘法器和一个加法器、若干个寄存器、两组用于在PE阵列水平/竖直方向进行数据交互的FIFO医护辅助的控制逻辑，具体的结构如下图：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/PE.png" width="400" align="center"><br>NFU的计算结果通过一个ALU写入到NBout中，ALU中实现并行度并不是很高的运算，如平均池化的除操作、非线性激活计算等，其中非线性激活运算采用分段函数进行插值近似，在精度损失很小的情况下获得更高的性能和功耗收益。</p>
-<p>NFU的PE阵列中对PE之间的data propagation进行了支持，引入改设计的目的是为了减少PE和SRAM之间的通信。对于卷积运算，同一个feature map的不同output neuron，stride没有超出kernel size的情况下，输入数据是由于部分是重复的，而PE间的data propagation引入就是为了将不同output neuron之间重复的那部分input neuron利用起来，从而减少SRAM访问的频率，可以很大程度上节省带宽，降低功耗，提升性能。其具体的收益如下图所示：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/pedata.png" width="400" align="center"><br>从卷积核尺寸的角度，卷积核的尺寸越大，收益更加的明显；上图是以32x32 input feature map + 5x5卷积核为例，随着PE数目的增加，在没有Inter-PE data propagation支持的情况下，带宽也会随之增加，但是在支持Inter-PE data propagation的情况下，带宽需求的增长十分的有限。</p>
-<h3 id="Buffer-Controller"><a href="#Buffer-Controller" class="headerlink" title="Buffer Controller"></a>Buffer Controller</h3><p>Buffer Controller是ShiDianNao引入的一个重要的结构，用于片上存储NBin/NBout/SB与计算部件NFU之间的数据交互的co-ordinator。Buffer Controller负责两个功能：<br><strong>1、以流式的方式，逐层的为NFU提供计算所需要的数据；</strong><br><strong>2、缓冲NFU计算的partial的结果，汇总完一整个layer/feature map上所有的output neuron之后写会NBout。</strong><br>同时为了高效的支持CNN模型中不同操作对应的访存特点，在Buffer controller中提供多种read mode的支持：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/readmode.png" width="400" align="center"><br>(a)读取多个banks，#0-&gt;#py-1<br>(b)读取多个banks，#py-&gt;#2py-1<br>(c)读取一个bank<br>(d)读取单个神经元<br>(e)通过给定的step size来读取神经元<br>(f)每个bank中读取一个神经元<br>对于卷积层，使用(a)/(b)从NBin中获取px*py，而(e)主要处理应于卷积核step size &gt; 1的情形；对于池化层，使用mode(a)(b)(c)(e)和(f)，对于normalization layer依然使用mode(a)(b)(c)(e)和(f)，而分类层使用mode(d)从output neuron中加载input neuron。</p>
-<h2 id="实验评估"><a href="#实验评估" class="headerlink" title="实验评估"></a>实验评估</h2><h3 id="对比性能"><a href="#对比性能" class="headerlink" title="对比性能"></a>对比性能</h3><p>评估环境的搭建使用的是Synopsys提供的EDA工具，65nm；实验的Baseline则选取了CPU（Intel Xeon E7-8830/2.13GHZ/1TB Memory）、GPU（NVIDIA K20M/5GB显存/3.52TFlops/28nm/Caffe）以及DianNiao项目的第一个工作成果DianNao，由于SRAM存储容量的限制，不能使用大的神经网络模型，所有的网络模型都是比较小的规模，在这10个Benchmark model里，layer wise的神经元最多消耗45KB SRAM存储，而模型的权重最多只消耗118KB SRAM，足以被ShiDianNao目前配备的288KB SRAM所支持），以下是所有实验的模型：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/result.png" width="500" align="center"></p>
-<p>评估所用的ShiDianNao，其NFU是由8*8=64个PE组成，在一个指令周期内支持64组乘加组合运算，存储上由64KB的NBin，64KB的NBout和128KB的SB以及32KB的指令Buffer组成且均采用SRAM的存储介质，具体的实验结果如下图所示：<br>相对于CPU、GPU、DianNao系列在速度方面的实验<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/sp.png" width="500" align="center"><br>相对于CPU、GPU、DianNao在能耗方面的实验：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/en.png" width="500" align="center"><br>以上的图可以看到，相较于CPU和GPU的bseline，其速度有显著的提升(46.8x than CPU，18.9x than GPU)，相较于DianNao依然有1.87X的速度提升，其功耗方面ShiDianNao依然有明显的优势。</p>
-<h3 id="功耗分配和面积分配"><a href="#功耗分配和面积分配" class="headerlink" title="功耗分配和面积分配"></a>功耗分配和面积分配</h3><p>下表是ShiDianNao的功耗和面积分配情况：<br><img src="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/分配.png" width="500" align="center"><br>由于ShiDianNao的一个策略就是将模型参数通过SRAM本地化，所有就芯片的面积而言，SB/NBin/NBout占用了绝大本分；而各个部件的功耗情况则明显不同，NFU占用了所有能耗的84%左右，着主要是因为这将NFU的计算功耗计算在内的同时，也将Inter-PE data propagation这部分本来需要访存的操作转移到NFU上。</p>
-<p><strong><font color="red">思考：</font></strong></p>
-<font color="red">其实就ShiDianNao的硬件设计而言，其SRAM本地化模型参数的思想和仅仅288KB的SRAM是比较矛盾的，因为现有的高精度模型往往都是数百MB的规模，芯片的设计很难满足通用型的要求。解决的方式有两个：(1)继续硬件的优化，在面积/功耗/成本各方面作出比较好的权衡；(2)模型压缩技术或许是一种不错的决绝办法，软件和算法相对于硬件来说有更大的灵活性，硬件在设计的时候充分考虑算法的计算特性，同时算法的部署过程中也要实时调整，在硬件上有更好的执行效率。</font>
-
-          
+          <p>&emsp;&emsp;ShiDianNao这篇论文更像是针对具体应用场景的体系结构&amp;优化的工作，但是对加速的的设计细节介绍的最为详细，无论是访存体系还是计算单元的设计都介绍的非常的细致。<strong>文章的主要思想：利用卷集神经网络(CNNs)权值共享的特性，将CNNs模型参数整体加载到SRAM构成的高速存储里，减少DRAM访问带来的开销;同时将加速器与视频图像传感器相连，减少额外的访存操作(传统模式：先将传感器采集的数据放入DRAM，然后通知加速器进行处理，在处理的过程中还要再一次的访问DRAM获取传感器数据)。</strong></p>
+<p><strong><font color="red">按照上面的思路，硬件的设计不可避免的会碰到以下问题：</font></strong><br><strong>1、SRAM被分配多大的容量？</strong> 既然要将CNNs模型参数整体加载到SRAM上，那么就会面对SRAM容量的取舍，容量大了功耗增加，芯片面积增加；容量过小，模型不能完全hold住，对计算性能带来影响。<br><strong>2、计算单元和CNNs如何映射？</strong> 最简单的方式就是每个神经元映射一个硬件的计算单元，但是CNNs模型的规模各不相同并且差别很大，在一定程度上限制了灵活性；另一种思路和之前的论文一致，采用基于时分复用的方式，执行计算和加载数据流水线的方式进行，而计算过程中是一次计算一个特定的feature map的output还是一次计算多个仍然是需要衡量的问题。<br><strong>3、Data locality是否眼进行深度的挖掘和优化？</strong> 数据局部性的优化处理也可能在一定程度上提高性能，如CNNs卷积层的计算过程中一组input neuron可能会被多个output neuron使用，所以在计算单元中引入一些本地存储可能会节省访存的开销，但同时会增加硬件设计的复杂度。<br>ShiDianNao论文最大的贡献就是对以上问题都进行了分析和处理，给出了非常精巧的设计方案。<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/28/论文-ShiDianNao-Shifting-Vision-Processing-Closer-to-the-Sensor/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1112,21 +1062,15 @@
 
       
         
-          
-            <p>&emsp;&emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。</p>
-<p>DaDianNao是一个多片的硬件系统，考虑到CNNs/DNNs和通用的工作负载所面临的存储墙的情况并不相同，它们虽然占用的存储空间很大，但是并没有超出多片系统的存储能力，也就是说可以考虑将数据分布在多片系统之上进行分布式的处理，可以充分的利用片上的高带宽和避免片外的低带宽，使大规模的网络模型可以更加高效的运行。</p>
-<h2 id="整体硬件架构"><a href="#整体硬件架构" class="headerlink" title="整体硬件架构"></a>整体硬件架构</h2><p>DaDianNao可以看作是在DianNao基础之上的扩展，下图所示是DianNao的架构，<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DianNao架构.png" width="400" align="center"></p>
-<h3 id="单个DaDianNao结构的设计"><a href="#单个DaDianNao结构的设计" class="headerlink" title="单个DaDianNao结构的设计"></a>单个DaDianNao结构的设计</h3><p>DaDianNao的主要区别在于针对存储神经网络输入和输出数据的NBin和NBout，存储神经连接参数的SB的组织形式以及核心计算单元NFU的数据交互方式进行了针对大尺寸模型的考量，而其中最为重要的就是访存体系的设计思想和细节，DaDianDao芯片的访存体系的高层次设计图如下：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DaDianNao高层次结构.png" width="600" align="center"><br>左图是芯片的高层次图，每个芯片由16个tile组成，右图是单个tile的结构图。每个tile内部是一个NFU搭配四个存储SB的eDRAM bank组成，而NBin和NBout则是对应与左图eDRAM router所连接的两条灰色的额eDRAM bank。不难发现，在DaDianNao中SB是采用分布式的方式存储的，之所以采用这种方式，可能的理解如下：<br><strong>a、eDRAM虽然相对于DRAM的延迟显著减小，但是其本质仍然是DRAM，存在着漏电的效应，需要周期性的充电刷新，并且刷新的频率相对于DRAM可能会更高，这可能会对访存的性能带来一定的影响，通过拆分SB存储，可以在一定程度上减小周期性的刷新带来的影响。</strong><br><strong>b、将SB拆分，放在每个NFU周围，这样距离计算单元更近，这样在执行具体的计算的时候，访存的时延更小，性能更高。</strong></p>
-<p><font color="red">DaDianNao相对于DianNao有一个比较明显的改变就是NBin/NBout/SB由原来的SDRAM存储改为eDRAM的存储介质，其只要原因如下：</font><br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DRAM.jpg" width="400" align="center"><br>由上表可以看出，使用SRAM在一定程度上可以缩小延迟，但是其需要的面积太大，这尤其是在高性能计算芯片中面积增加程度很高，成本散热以及功耗都是很难处理的问题，选用eDRAM也是在存储密度/访存延迟/功耗之间最为适宜的权衡。</p>
-<p>每个tile内部的NFU内部结构如图所示：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DADIANNAONFU.png" width="400" align="center"><br>图中详细描绘了NFU流水线的每个阶段与NBin/NBout/SB的交互，针对不同的网络层，根据其存储和计算的特性，其流水线的工作模式如下图所示：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/pipeline.png" width="600" align="center"><br>其中的红色部分The eDram表示的就是SB存储，</p>
-<p>&emsp;&emsp;以上是单个DaDianNao芯片的设计，由下表可知，单个DaDianNao芯片中用于NBin/NBout的central eDRAM的存储容量为4MB，每个tile中用于SB的eDRAM的容量是2MB，每个芯片由16个tile组成，所以单个芯片的eDRAM的总容量是$4+2*16=36$MB，仅仅单片的容量是无法对大模型的网络进行高性能的计算的，所以论文又提出了多片互连的架构。<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/容量.png" width="400" align="center"></p>
-<h3 id="多个DaDianNao结构的互连"><a href="#多个DaDianNao结构的互连" class="headerlink" title="多个DaDianNao结构的互连"></a>多个DaDianNao结构的互连</h3><p>DaDianNao的多片互连并不是定制的设计，而是直接使用现成的技术，即HyperTransport 2.0通信IP，在每个DaDianNao芯片的上下左右四周提供四组HT 2.0的通信通道，每个通道的通信带宽在in/out方向分别达到6.6GB/s，由于相互之间数据的交换，支持全双工通信且延迟为80ns。</p>
-<p>多片互连的结构可以支持大尺寸的网路模型，不同的模型在多片的模式下通信的数据量存在着较大的差异：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/差异.png" width="600" align="center"></p>
-<h2 id="相对于GPU的对比实验"><a href="#相对于GPU的对比实验" class="headerlink" title="相对于GPU的对比实验"></a>相对于GPU的对比实验</h2><p>下图是对模型训练的过程中不同的网络层在多片硬件上相对于GPU的加速的效果：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/trainingsp.png" width="400" align="center"></p>
-<p>下图是对模型前向过程中不同的网络层在多片硬件上相对于GPU的能耗比：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/eninference.png" width="400" align="center"></p>
-<p>下图是对模型训练的过程中不同的网络层在多片硬件上相对于GPU的能耗比：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/entraining.png" width="400" align="center"></p>
-
-          
+          <p>&emsp;&emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。</p>
+<p>DaDianNao是一个多片的硬件系统，考虑到CNNs/DNNs和通用的工作负载所面临的存储墙的情况并不相同，它们虽然占用的存储空间很大，但是并没有超出多片系统的存储能力，也就是说可以考虑将数据分布在多片系统之上进行分布式的处理，可以充分的利用片上的高带宽和避免片外的低带宽，使大规模的网络模型可以更加高效的运行。<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

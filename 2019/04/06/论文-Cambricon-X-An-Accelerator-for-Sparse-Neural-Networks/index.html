@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/CONV.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/FC.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/energyReduction.png">
-<meta property="og:updated_time" content="2019-04-07T16:14:53.786Z">
+<meta property="og:updated_time" content="2019-04-09T07:29:56.270Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-Cambricon-X: An Accelerator for Sparse Neural Networks">
 <meta name="twitter:description" content="Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。 Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元">
@@ -345,7 +345,7 @@
 
       
         <p>Cambricon-X论文目的性十分的明确，就是在之前DianNao系列论文的基础之上，面对DNNs剪枝压缩算法之后，神经网络模型权重非结构化而无法很好的在硬件层面利用数据的稀疏性进行加速的问题。</p>
-<p>Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元，需要找到另一个feature map里相同位置的输出神经元代替，这会导致用于管理输出神经元的地址对齐逻辑变得比较复杂，在Cambricon-X的硬件层面并没有做这个支持，于是相应的支持不得不上推到软件层面，这就引入了额外的开销，减少了性能加速的收益。</p>
+<p>Combricon-X支持权重的稀疏化处理，并不支持神经元的稀疏化，也就是说在进行卷积和全连接层的矩阵/向量运算的时候，支持稀疏化的运算，但是对于神经元（非线性激活函数），对于被prune掉的输出神经元，需要找到另一个feature map里相同位置的输出神经元代替，这会导致用于管理输出神经元的地址对齐逻辑变得比较复杂，在Cambricon-X的硬件层面并没有做这个支持，于是相应的支持不得不上推到软件层面，这就引入了额外的开销，减少了性能加速的收益。<br><a id="more"></a></p>
 <h2 id="整体架构图"><a href="#整体架构图" class="headerlink" title="整体架构图"></a>整体架构图</h2><p>下图是加速器的主架构图，回忆之前的DianNao论文，整体的硬件架构基本相同，只是在数据缓存NBin/NBout和计算单元之间加入了Buffer Controller逻辑，专门用于完成稀疏访存操作。<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/加速器架构图.png" width="500" align="center"></p>
 <p>下图是Buffer Controller的内部设计结构图：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/BufferController.png" width="500" align="center"><br>其中Indexing模块要做的就是根据权重的稀疏程度对输入神经元进行稀疏访存选取，并将访存结果送入计算引擎单元(PE)里的工作了。</p>
 <p>PE的内部结构图如下：<br><img src="/2019/04/06/论文-Cambricon-X-An-Accelerator-for-Sparse-Neural-Networks/PE.png" width="400" align="center"><br>其中SB(Synapse Buffer)用于供给计算过程中所需的权重信息（虽然因为加速器片上内存有限，无法在SB里存放所有权重，但是权重仍然比神经元有更强的重复访问特性，所以会在SB里进行记录，想象一下卷积层的weight sharing机制或是RNN的weight在多个time step之间sharing的特性），PEFU则是计算逻辑的硬件实现了，本质上PEFU就是一组乘加器的连接。</p>

@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/trainingsp.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/eninference.png">
 <meta property="og:image" content="https://deepshuai.github.io/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/entraining.png">
-<meta property="og:updated_time" content="2019-03-26T13:38:46.624Z">
+<meta property="og:updated_time" content="2019-04-09T07:30:20.750Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文-DaDianNao: A Machine-Learning Supercomputer">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。 DaDianNao是一个多片的硬件系统，考虑到C">
@@ -343,7 +343,7 @@
 
       
         <p>&emsp;&emsp;之前的DianNao论文可以看作是硬件设计的基础，在此之上，对深度学习芯片所面对的应用场景进行了更加细致的划分。于是就有了面向服务器端的高性能计算架构DaDianNao，面向边缘端设备应用场景的ShiDianNao，面向更加泛化的机器学习算法的PuDianNao以及面向更加广泛的机器学习加速器的combricon指令集架构。</p>
-<p>DaDianNao是一个多片的硬件系统，考虑到CNNs/DNNs和通用的工作负载所面临的存储墙的情况并不相同，它们虽然占用的存储空间很大，但是并没有超出多片系统的存储能力，也就是说可以考虑将数据分布在多片系统之上进行分布式的处理，可以充分的利用片上的高带宽和避免片外的低带宽，使大规模的网络模型可以更加高效的运行。</p>
+<p>DaDianNao是一个多片的硬件系统，考虑到CNNs/DNNs和通用的工作负载所面临的存储墙的情况并不相同，它们虽然占用的存储空间很大，但是并没有超出多片系统的存储能力，也就是说可以考虑将数据分布在多片系统之上进行分布式的处理，可以充分的利用片上的高带宽和避免片外的低带宽，使大规模的网络模型可以更加高效的运行。<br><a id="more"></a></p>
 <h2 id="整体硬件架构"><a href="#整体硬件架构" class="headerlink" title="整体硬件架构"></a>整体硬件架构</h2><p>DaDianNao可以看作是在DianNao基础之上的扩展，下图所示是DianNao的架构，<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DianNao架构.png" width="400" align="center"></p>
 <h3 id="单个DaDianNao结构的设计"><a href="#单个DaDianNao结构的设计" class="headerlink" title="单个DaDianNao结构的设计"></a>单个DaDianNao结构的设计</h3><p>DaDianNao的主要区别在于针对存储神经网络输入和输出数据的NBin和NBout，存储神经连接参数的SB的组织形式以及核心计算单元NFU的数据交互方式进行了针对大尺寸模型的考量，而其中最为重要的就是访存体系的设计思想和细节，DaDianDao芯片的访存体系的高层次设计图如下：<br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DaDianNao高层次结构.png" width="600" align="center"><br>左图是芯片的高层次图，每个芯片由16个tile组成，右图是单个tile的结构图。每个tile内部是一个NFU搭配四个存储SB的eDRAM bank组成，而NBin和NBout则是对应与左图eDRAM router所连接的两条灰色的额eDRAM bank。不难发现，在DaDianNao中SB是采用分布式的方式存储的，之所以采用这种方式，可能的理解如下：<br><strong>a、eDRAM虽然相对于DRAM的延迟显著减小，但是其本质仍然是DRAM，存在着漏电的效应，需要周期性的充电刷新，并且刷新的频率相对于DRAM可能会更高，这可能会对访存的性能带来一定的影响，通过拆分SB存储，可以在一定程度上减小周期性的刷新带来的影响。</strong><br><strong>b、将SB拆分，放在每个NFU周围，这样距离计算单元更近，这样在执行具体的计算的时候，访存的时延更小，性能更高。</strong></p>
 <p><font color="red">DaDianNao相对于DianNao有一个比较明显的改变就是NBin/NBout/SB由原来的SDRAM存储改为eDRAM的存储介质，其只要原因如下：</font><br><img src="/2019/03/25/论文-DaDianNao-A-Machine-Learning-Supercomputer/DRAM.jpg" width="400" align="center"><br>由上表可以看出，使用SRAM在一定程度上可以缩小延迟，但是其需要的面积太大，这尤其是在高性能计算芯片中面积增加程度很高，成本散热以及功耗都是很难处理的问题，选用eDRAM也是在存储密度/访存延迟/功耗之间最为适宜的权衡。</p>

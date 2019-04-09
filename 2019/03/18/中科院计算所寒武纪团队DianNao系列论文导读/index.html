@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技">
+<meta name="description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。">
 <meta name="keywords" content="AI芯片， 深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="中科院计算所寒武纪团队DianNao系列论文导读">
 <meta property="og:url" content="https://deepshuai.github.io/2019/03/18/中科院计算所寒武纪团队DianNao系列论文导读/index.html">
 <meta property="og:site_name" content="努力，任何时候都不会晚。">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-28T16:18:23.594Z">
+<meta property="og:updated_time" content="2019-04-09T07:30:08.878Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="中科院计算所寒武纪团队DianNao系列论文导读">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。 DianNao项目之前：&amp;emsp;&amp;emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。">
 
 
 
@@ -332,6 +332,7 @@
 
       
         <p>&emsp;&emsp;中科院计算所的这几篇DianNao系列论文引发了专用深度学习加速器研究和应用的热潮，后续的博客将会读每一篇论文进行阅读和分析，在每一篇的论文阅读之前，我们先梳理一下寒武纪芯片DianNao的整体项目。</p>
+<a id="more"></a>
 <h2 id="DianNao项目之前："><a href="#DianNao项目之前：" class="headerlink" title="DianNao项目之前："></a>DianNao项目之前：</h2><p>&emsp;&emsp;2010年，Temam教授在ISCA的主题报告上提到，机器学习硬件加速器是处理器微结构领域极有吸引力的一个发展方向，是处理器技术、应用和机器学习发展的大势所趋。在2012年的ISCA上，Temam教授提出了第一个机器学习加速器设计，表明在以神经网络为基础的一大类应用上是可以以很小的面积和功耗获得高性能的。但此工作的主要局限性在于其内存带宽。</p>
 <h2 id="DianNao项目："><a href="#DianNao项目：" class="headerlink" title="DianNao项目："></a>DianNao项目：</h2><p>&emsp;&emsp;DianNao学术项目的目标是面向机器学习研究加速器架构。本项目是中科院计算所的陈云霁教授和法国Inria的Olivier Temam间的一个学术合作项目，双方为此设立了联合实验室。</p>
 <p>&emsp;&emsp;Temam教授和陈教授的合作始于第一个加速器，名为<font color="ff00"><a href="http://boogie.is.titech.ac.jp/lecture/lecture-wiki/index.php?plugin=attach&amp;refer=hpc2015&amp;openfile=DianNao.pdf" target="_blank" rel="noopener">DianNao</a></font>（这也是DianNao家族的第一个成员）。DianNao在ISCA-2012加速器的基础上增加了局部存储，使其可以捕捉深度神经网路的数据局部性并由此克服内存带宽的限制。DianNao加速器的设计发表于ASPLOS-2014，获得了该会议的最佳论文奖。</p>
